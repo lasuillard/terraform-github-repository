@@ -16,3 +16,7 @@ repos:
       - id: terraform_providers_lock
       - id: terraform_docs
         args: [--args=--config=.terraform-docs.yaml]
+
+ci:
+  autofix_prs: true
+  autoupdate_schedule: monthly
