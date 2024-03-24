@@ -1,13 +1,13 @@
-provider github {
-token = var.github_token
+provider "github" {
+  token = var.github_token
 }
 
 module "repository" {
   source = "../../"
 
-  name = "example-repository"
+  name                        = "example-repository"
   description                 = "An example repository."
-  allow_auto_merge=false
+  allow_auto_merge            = false
   allow_merge_commit          = true
   allow_rebase_merge          = true
   allow_update_branch         = null
