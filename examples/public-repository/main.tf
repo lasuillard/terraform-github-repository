@@ -15,5 +15,5 @@ module "repository" {
   delete_branch_on_merge      = false
   squash_merge_commit_message = "COMMIT_MESSAGES"
   squash_merge_commit_title   = "COMMIT_OR_PR_TITLE"
-  visibility                  = "private"
+  visibility                  = "public"
 }
