@@ -159,13 +159,13 @@ resource "github_repository_file" "this" {
 }
 
 resource "github_issue_label" "this" {
-  for_each = { for v in(var.issue_labels_authoritative ? [] : var.issue_labels) : v.name => v }
+  count = length(var.issue_labels_authoritative ? [] : var.issue_labels)
 
   repository = github_repository.this[0].name
 
-  name        = each.value.name
-  description = lookup(each.value, "description", null)
-  color       = trimprefix(each.value.color, "#")
+  name        = var.issue_labels[count.index].name
+  description = lookup(var.issue_labels[count.index], "description", null)
+  color       = trimprefix(var.issue_labels[count.index].color, "#")
 }
 
 resource "github_issue_labels" "this" {
