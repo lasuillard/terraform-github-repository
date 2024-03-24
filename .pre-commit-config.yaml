@@ -2,12 +2,6 @@ default_stages: [commit]
 default_install_hook_types: [pre-commit, commit-msg]
 fail_fast: true
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.5.0
-    hooks:
-      - id: trailing-whitespace
-      - id: end-of-file-fixer
-
   - repo: https://github.com/antonbabenko/pre-commit-terraform
     rev: v1.88.0
     hooks:
@@ -16,6 +10,12 @@ repos:
       - id: terraform_providers_lock
       - id: terraform_docs
         args: [--args=--config=.terraform-docs.yaml]
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
 
 ci:
   autofix_prs: true
