@@ -10,7 +10,7 @@ on:
 permissions: read-all
 
 jobs:
-  ci:
+  main:
     runs-on: ubuntu-latest
     permissions:
       contents: write
