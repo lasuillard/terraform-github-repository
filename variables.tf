@@ -252,6 +252,14 @@ variable "allow_update_branch" {
   default     = null
 }
 
+variable "actions_repository_access_level" {
+  description = <<-EOT
+Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.
+EOT
+  type        = string
+  default     = "none"
+}
+
 variable "actions_secrets" {
   description = "GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified."
   type        = list(map(string))
@@ -280,4 +288,66 @@ variable "issue_labels_authoritative" {
   description = "Whether issue labels managed in authoritative ways. If `true`, issue labels will be created using `github_issue_labels` resource type, possibly causing all the labels not listed removed."
   type        = bool
   default     = false
+}
+
+variable "collaborators" {
+  default = []
+}
+
+variable "collaborators_authoritative" {
+  type    = bool
+  default = false
+}
+
+variable "webhooks" {
+  default = []
+}
+
+variable "branches" {
+  default = []
+}
+
+variable "branch_protections" {
+  default = []
+}
+
+variable "rulesets" {
+  default = []
+}
+
+variable "tag_protections" {
+  default = []
+}
+
+variable "actions_repository_permissions" {
+  default = {}
+}
+
+variable "codespaces_secrets" {
+  default = []
+}
+
+variable "dependabot_secrets" {
+  default = []
+}
+
+variable "dependabot_security_updates_enabled" {
+  type    = bool
+  default = false
+}
+
+variable "deploy_keys" {
+  default = []
+}
+
+variable "environments" {
+  default = []
+}
+
+variable "environment_deployment_policies" {
+  default = []
+}
+
+variable "autolink_references" {
+  default = []
 }

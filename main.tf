@@ -91,10 +91,128 @@ resource "github_repository" "this" {
   allow_update_branch                     = var.allow_update_branch
 }
 
+resource "github_repository_collaborator" "this" {
+  count = length(var.collaborators_authoritative ? [] : var.collaborators)
+
+  repository                  = github_repository.this[0].name
+  username                    = var.collaborators[count.index].username
+  permission                  = lookup(var.collaborators[count.index], "permission", null)
+  permission_diff_suppression = lookup(var.collaborators[count.index], "permission_diff_suppression", null)
+}
+
+resource "github_repository_collaborators" "this" {
+  count = length(var.collaborators_authoritative ? var.collaborators : [])
+
+  repository = github_repository.this[0].name
+
+  dynamic "user" {
+    for_each = lookup(var.collaborators[count.index], "users", [])
+
+    content {
+      permission = lookup(user.value, "permission", null)
+      username   = user.value.username
+    }
+  }
+
+  dynamic "team" {
+    for_each = lookup(var.collaborators[count.index], "teams", [])
+
+    content {
+      team_id    = team.value.team_id
+      permission = lookup(team.value, "permission", null)
+    }
+  }
+}
+
+resource "github_repository_file" "this" {
+  for_each = { for v in var.files : v.file => v }
+
+  repository          = github_repository.this[0].name
+  branch              = lookup(each.value, "branch", github_branch_default.this.branch)
+  file                = each.value.file
+  content             = each.value.content
+  commit_message      = lookup(each.value, "commit_message", null)
+  commit_author       = lookup(each.value, "commit_author", null)
+  commit_email        = lookup(each.value, "commit_email", null)
+  overwrite_on_create = lookup(each.value, "overwrite_on_create", false)
+}
+
+resource "github_repository_webhook" "this" {
+  count = length(var.webhooks)
+
+  repository = github_repository.this[0].name
+  events     = var.webhooks[count.index].events
+
+  dynamic "configuration" {
+    for_each = length(var.webhooks[count.index].configuration) > 0 ? [var.webhooks[count.index].configuration] : []
+
+    content {
+      url          = configuration.value.url
+      content_type = configuration.value.content_type
+      secret       = lookup(configuration.value, "secret", null)
+      insecure_ssl = lookup(configuration.value, "insecure", null)
+    }
+  }
+
+  active = lookup(var.webhooks[count.index], "active", null)
+}
+
+# Branches & Tags
+# ============================================================================
 resource "github_branch_default" "this" {
   repository = github_repository.this[0].name
   branch     = var.default_branch
   rename     = var.default_branch_rename
+}
+
+resource "github_branch" "this" {
+  for_each = { for b in var.branches : b.branch => b }
+
+  repository    = github_repository.this[0].name
+  branch        = each.value.branch
+  source_branch = lookup(each.value, "source_branch", null)
+  source_sha    = lookup(each.value, "source_sha", null)
+}
+
+# TODO
+# resource "github_branch_protection" "this" {
+#   repository = github_repository.this[0].name
+
+# }
+
+# resource "github_repository_ruleset" "this" {
+#   repository = github_repository.this[0].name
+
+# }
+
+resource "github_repository_tag_protection" "this" {
+  for_each = { for tp in var.tag_protections : tp.pattern => tp }
+
+  repository = github_repository.this[0].name
+  pattern    = each.value.pattern
+}
+
+# GitHub Actions
+# ============================================================================
+resource "github_actions_repository_access_level" "this" {
+  repository   = github_repository.this[0].name
+  access_level = var.actions_repository_access_level
+}
+
+resource "github_actions_repository_permissions" "this" {
+  repository      = github_repository.this[0].name
+  allowed_actions = lookup(var.actions_repository_permissions, "allowed_actions")
+  enabled         = lookup(var.actions_repository_permissions, "enabled")
+
+  dynamic "allowed_actions_config" {
+    for_each = length(lookup(var.actions_repository_permissions, "allowed_actions_config", [])) > 0 ? [var.actions_repository_permissions.allowed_actions_config] : []
+
+    content {
+      github_owned_allowed = allowed_actions_config.value.github_owned_allowed
+      patterns_allowed     = lookup(allowed_actions_config.value, "patterns_allowed")
+      verified_allowed     = lookup(allowed_actions_config.value, "verified_allowed")
+    }
+  }
 }
 
 resource "github_actions_secret" "this" {
@@ -145,19 +263,83 @@ resource "github_actions_environment_variable" "this" {
   value         = each.value.value
 }
 
-resource "github_repository_file" "this" {
-  for_each = { for v in var.files : v.file => v }
+# Codespaces
+# ============================================================================
+resource "github_codespaces_secret" "this" {
+  for_each = { for v in var.codespaces_secrets : v.secret_name => v }
 
-  repository          = github_repository.this[0].name
-  branch              = lookup(each.value, "branch", github_branch_default.this.branch)
-  file                = each.value.file
-  content             = each.value.content
-  commit_message      = lookup(each.value, "commit_message", null)
-  commit_author       = lookup(each.value, "commit_author", null)
-  commit_email        = lookup(each.value, "commit_email", null)
-  overwrite_on_create = lookup(each.value, "overwrite_on_create", false)
+  repository      = github_repository.this[0].name
+  secret_name     = each.value.secret_name
+  encrypted_value = lookup(each.value, "encrypted_value", null)
+  plaintext_value = lookup(each.value, "plaintext_value", null)
 }
 
+# Dependabot
+# ============================================================================
+resource "github_dependabot_secret" "this" {
+  for_each = { for v in var.dependabot_secrets : v.secret_name => v }
+
+  repository      = github_repository.this[0].name
+  secret_name     = each.value.secret_name
+  encrypted_value = lookup(each.value, "encrypted_value", null)
+  plaintext_value = lookup(each.value, "plaintext_value", null)
+}
+
+resource "github_repository_dependabot_security_updates" "this" {
+  repository = github_repository.this[0].name
+  enabled    = var.dependabot_security_updates_enabled
+}
+
+# Environments & Deployments
+# ============================================================================
+resource "github_repository_deploy_key" "this" {
+  count = length(var.deploy_keys)
+
+  repository = github_repository.this[0].name
+  key        = var.deploy_keys[count.index].key
+  read_only  = var.deploy_keys[count.index].read_only
+  title      = var.deploy_keys[count.index].title
+}
+
+resource "github_repository_environment" "this" {
+  for_each = { for v in var.environments : v.environment => v }
+
+  repository          = github_repository.this[0].name
+  environment         = each.value.environment
+  wait_timer          = lookup(each.value, "wait_timer", null)
+  can_admins_bypass   = lookup(each.value, "can_admins_bypass", null)
+  prevent_self_review = lookup(each.value, "prevent_self_review", null)
+
+  dynamic "reviewers" {
+    for_each = length(lookup(each.value, "reviewers", [])) > 0 ? [each.value.reviewers] : []
+
+    content {
+      teams = lookup(reviewers.value, "teams")
+      users = lookup(reviewers.value, "users")
+    }
+  }
+
+  dynamic "deployment_branch_policy" {
+    for_each = length(lookup(each.value, "deployment_branch_policy", [])) > 0 ? [each.value.reviewers] : []
+
+    content {
+      protected_branches     = each.value.protected_branches
+      custom_branch_policies = each.value.custom_branch_policies
+    }
+  }
+}
+
+resource "github_repository_environment_deployment_policy" "this" {
+  for_each = { for v in var.environment_deployment_policies : v.name => v }
+
+  repository     = github_repository.this[0].name
+  environment    = each.value.environment_name
+  branch_pattern = each.value.branch_pattern
+}
+
+# Issues and Pull Requests
+# ============================================================================
+# NOTE: Skipped milestone, project and pull request resources
 resource "github_issue_label" "this" {
   count = length(var.issue_labels_authoritative ? [] : var.issue_labels)
 
@@ -182,4 +364,13 @@ resource "github_issue_labels" "this" {
       description = lookup(label.value, "description", null)
     }
   }
+}
+
+resource "github_repository_autolink_reference" "this" {
+  for_each = { for v in var.autolink_references : v.key_prefix => v }
+
+  repository          = github_repository.this[0].name
+  key_prefix          = each.value.key_prefix
+  target_url_template = each.value.target_url_template
+  is_alphanumeric     = lookup(each.value, "is_alphanumeric")
 }
