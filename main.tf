@@ -1,6 +1,10 @@
 resource "github_repository" "this" {
   count = var.create ? 1 : 0
 
+  lifecycle {
+    ignore_changes = [description]
+  }
+
   name                        = var.name
   description                 = var.description
   homepage_url                = var.homepage_url
