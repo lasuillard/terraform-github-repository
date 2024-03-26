@@ -148,6 +148,11 @@ resource "github_actions_environment_variable" "this" {
 resource "github_repository_file" "this" {
   for_each = { for v in var.files : v.file => v }
 
+  lifecycle {
+    # https://github.com/integrations/terraform-provider-github/issues/689
+    ignore_changes = [commit_message, commit_author, commit_email]
+  }
+
   repository          = github_repository.this[0].name
   branch              = lookup(each.value, "branch", github_branch_default.this.branch)
   file                = each.value.file
