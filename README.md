@@ -1,5 +1,9 @@
 # terraform-github-repository
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![CI](https://github.com/lasuillard/terraform-github-repository/actions/workflows/ci.yaml/badge.svg)](https://github.com/lasuillard/terraform-github-repository/actions/workflows/ci.yaml)
+![GitHub Release](https://img.shields.io/github/v/release/lasuillard/terraform-github-repository)
+
 Terraform module to create GitHub repository and relevant resources.
 
 <!-- BEGIN_TF_DOCS -->
