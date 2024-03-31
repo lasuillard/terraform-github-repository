@@ -260,18 +260,6 @@ EOT
   default     = "none"
 }
 
-variable "actions_secrets" {
-  description = "GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified."
-  type        = list(map(string))
-  default     = []
-}
-
-variable "actions_variables" {
-  description = "GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified."
-  type        = list(map(string))
-  default     = []
-}
-
 variable "files" {
   description = "Repository files."
   type        = list(map(string))
@@ -338,18 +326,6 @@ variable "actions_repository_permissions" {
   default     = {}
 }
 
-variable "codespaces_secrets" {
-  description = "Codespaces secrets for this repository."
-  type        = list(map(string))
-  default     = []
-}
-
-variable "dependabot_secrets" {
-  description = "Dependabot secrets for this repository."
-  type        = list(map(string))
-  default     = []
-}
-
 variable "dependabot_security_updates_enabled" {
   description = "Whether to enable Dependabot security updates."
   type        = bool
@@ -378,4 +354,47 @@ variable "autolink_references" {
   description = "Autolink references."
   type        = list(map(string))
   default     = []
+}
+
+variable "actions_secrets" {
+  description = "GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
+}
+
+variable "actions_variables" {
+  description = "GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified."
+  type = list(object({
+    environment   = optional(string)
+    variable_name = string
+    value         = optional(string)
+  }))
+  default = []
+}
+
+variable "codespaces_secrets" {
+  description = "Codespaces secrets for this repository."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
+}
+
+variable "dependabot_secrets" {
+  description = "Dependabot secrets for this repository."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
 }

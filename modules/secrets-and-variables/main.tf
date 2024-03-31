@@ -1,7 +1,7 @@
 resource "github_actions_secret" "this" {
   for_each = {
     for v in var.actions_secrets : v.secret_name => v
-    if !contains(keys(v), "environment")
+    if v.environment == null
   }
 
   repository      = var.repository
@@ -13,7 +13,7 @@ resource "github_actions_secret" "this" {
 resource "github_actions_environment_secret" "this" {
   for_each = {
     for v in var.actions_secrets : "${v.environment}/${v.secret_name}" => v
-    if contains(keys(v), "environment")
+    if v.environment != null
   }
 
   repository      = var.repository
@@ -26,7 +26,7 @@ resource "github_actions_environment_secret" "this" {
 resource "github_actions_variable" "this" {
   for_each = {
     for v in var.actions_variables : v.variable_name => v
-    if !contains(keys(v), "environment")
+    if v.environment == null
   }
 
   repository    = var.repository
@@ -37,7 +37,7 @@ resource "github_actions_variable" "this" {
 resource "github_actions_environment_variable" "this" {
   for_each = {
     for v in var.actions_variables : "${v.environment}/${v.variable_name}" => v
-    if contains(keys(v), "environment")
+    if v.environment != null
   }
 
   repository    = var.repository
