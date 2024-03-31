@@ -137,7 +137,7 @@ resource "github_repository_file" "this" {
   }
 
   repository          = github_repository.this[0].name
-  branch              = lookup(each.value, "branch", github_branch_default.this.branch)
+  branch              = lookup(each.value, "branch", github_branch_default.this[0].branch)
   file                = each.value.file
   content             = each.value.content
   commit_message      = lookup(each.value, "commit_message", null)
@@ -168,6 +168,7 @@ resource "github_repository_webhook" "this" {
 
 module "secrets_and_variables" {
   source = "./modules/secrets-and-variables"
+  count  = var.create ? 1 : 0
 
   repository         = github_repository.this[0].name
   actions_secrets    = var.actions_secrets
@@ -179,6 +180,7 @@ module "secrets_and_variables" {
 # Branches & Tags
 # ============================================================================
 resource "github_branch_default" "this" {
+  count      = var.create ? 1 : 0
   repository = github_repository.this[0].name
   branch     = var.default_branch
   rename     = var.default_branch_rename
@@ -214,11 +216,13 @@ resource "github_repository_tag_protection" "this" {
 # GitHub Actions
 # ============================================================================
 resource "github_actions_repository_access_level" "this" {
+  count        = var.create ? 1 : 0
   repository   = github_repository.this[0].name
   access_level = var.actions_repository_access_level
 }
 
 resource "github_actions_repository_permissions" "this" {
+  count           = var.create ? 1 : 0
   repository      = github_repository.this[0].name
   allowed_actions = lookup(var.actions_repository_permissions, "allowed_actions", "all")
   enabled         = lookup(var.actions_repository_permissions, "enabled", true)
@@ -237,6 +241,7 @@ resource "github_actions_repository_permissions" "this" {
 # Dependabot
 # ============================================================================
 resource "github_repository_dependabot_security_updates" "this" {
+  count      = var.create ? 1 : 0
   repository = github_repository.this[0].name
   enabled    = var.dependabot_security_updates_enabled
 }

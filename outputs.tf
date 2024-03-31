@@ -56,5 +56,5 @@ EOT
 
 output "repository_branch_default" {
   description = "Default branch name."
-  value       = github_branch_default.this.branch
+  value       = github_branch_default.this[0].branch
 }
