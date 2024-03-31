@@ -22,22 +22,18 @@ Terraform module to create GitHub repository and relevant resources.
 
 ## Modules
 
-No modules.
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_secrets_and_variables"></a> [secrets\_and\_variables](#module\_secrets\_and\_variables) | ./modules/secrets-and-variables | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [github_actions_environment_secret.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_environment_secret) | resource |
-| [github_actions_environment_variable.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_environment_variable) | resource |
 | [github_actions_repository_access_level.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_repository_access_level) | resource |
 | [github_actions_repository_permissions.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_repository_permissions) | resource |
-| [github_actions_secret.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
-| [github_actions_variable.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_variable) | resource |
 | [github_branch.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch) | resource |
 | [github_branch_default.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
-| [github_codespaces_secret.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/codespaces_secret) | resource |
-| [github_dependabot_secret.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/dependabot_secret) | resource |
 | [github_issue_label.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_label) | resource |
 | [github_issue_labels.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/issue_labels) | resource |
 | [github_repository.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
@@ -71,14 +67,14 @@ No modules.
 | <a name="input_autolink_references"></a> [autolink\_references](#input\_autolink\_references) | n/a | `list` | `[]` | no |
 | <a name="input_branch_protections"></a> [branch\_protections](#input\_branch\_protections) | n/a | `list` | `[]` | no |
 | <a name="input_branches"></a> [branches](#input\_branches) | n/a | `list` | `[]` | no |
-| <a name="input_codespaces_secrets"></a> [codespaces\_secrets](#input\_codespaces\_secrets) | n/a | `list` | `[]` | no |
+| <a name="input_codespaces_secrets"></a> [codespaces\_secrets](#input\_codespaces\_secrets) | Codespaces secrets for this repository. | `list(map(string))` | `[]` | no |
 | <a name="input_collaborators"></a> [collaborators](#input\_collaborators) | n/a | `list` | `[]` | no |
 | <a name="input_collaborators_authoritative"></a> [collaborators\_authoritative](#input\_collaborators\_authoritative) | n/a | `bool` | `false` | no |
 | <a name="input_create"></a> [create](#input\_create) | Whether to create this module or not. | `bool` | `true` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The name of the default branch of the repository. | `string` | `"main"` | no |
 | <a name="input_default_branch_rename"></a> [default\_branch\_rename](#input\_default\_branch\_rename) | Indicate if it should rename the branch rather than use an existing branch. | `bool` | `false` | no |
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Automatically delete head branch after a pull request is merged. | `bool` | `false` | no |
-| <a name="input_dependabot_secrets"></a> [dependabot\_secrets](#input\_dependabot\_secrets) | n/a | `list` | `[]` | no |
+| <a name="input_dependabot_secrets"></a> [dependabot\_secrets](#input\_dependabot\_secrets) | Dependabot secrets for this repository. | `list(map(string))` | `[]` | no |
 | <a name="input_dependabot_security_updates_enabled"></a> [dependabot\_security\_updates\_enabled](#input\_dependabot\_security\_updates\_enabled) | n/a | `bool` | `false` | no |
 | <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | n/a | `list` | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |

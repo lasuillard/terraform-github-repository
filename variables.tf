@@ -324,11 +324,15 @@ variable "actions_repository_permissions" {
 }
 
 variable "codespaces_secrets" {
-  default = []
+  description = "Codespaces secrets for this repository."
+  type        = list(map(string))
+  default     = []
 }
 
 variable "dependabot_secrets" {
-  default = []
+  description = "Dependabot secrets for this repository."
+  type        = list(map(string))
+  default     = []
 }
 
 variable "dependabot_security_updates_enabled" {

@@ -166,6 +166,16 @@ resource "github_repository_webhook" "this" {
   active = lookup(var.webhooks[count.index], "active", null)
 }
 
+module "secrets_and_variables" {
+  source = "./modules/secrets-and-variables"
+
+  repository         = github_repository.this[0].name
+  actions_secrets    = var.actions_secrets
+  actions_variables  = var.actions_variables
+  codespaces_secrets = var.codespaces_secrets
+  dependabot_secrets = var.dependabot_secrets
+}
+
 # Branches & Tags
 # ============================================================================
 resource "github_branch_default" "this" {
@@ -210,8 +220,8 @@ resource "github_actions_repository_access_level" "this" {
 
 resource "github_actions_repository_permissions" "this" {
   repository      = github_repository.this[0].name
-  allowed_actions = lookup(var.actions_repository_permissions, "allowed_actions")
-  enabled         = lookup(var.actions_repository_permissions, "enabled")
+  allowed_actions = lookup(var.actions_repository_permissions, "allowed_actions", "all")
+  enabled         = lookup(var.actions_repository_permissions, "enabled", true)
 
   dynamic "allowed_actions_config" {
     for_each = length(lookup(var.actions_repository_permissions, "allowed_actions_config", [])) > 0 ? [var.actions_repository_permissions.allowed_actions_config] : []
@@ -224,76 +234,8 @@ resource "github_actions_repository_permissions" "this" {
   }
 }
 
-resource "github_actions_secret" "this" {
-  for_each = {
-    for v in var.actions_secrets : v.secret_name => v
-    if !contains(keys(v), "environment")
-  }
-
-  repository      = github_repository.this[0].name
-  secret_name     = each.value.secret_name
-  encrypted_value = lookup(each.value, "encrypted_value", null)
-  plaintext_value = lookup(each.value, "plaintext_value", null)
-}
-
-resource "github_actions_environment_secret" "this" {
-  for_each = {
-    for v in var.actions_secrets : "${v.environment}/${v.secret_name}" => v
-    if contains(keys(v), "environment")
-  }
-
-  repository      = github_repository.this[0].name
-  environment     = each.value.environment
-  secret_name     = each.value.secret_name
-  encrypted_value = lookup(each.value, "encrypted_value", null)
-  plaintext_value = lookup(each.value, "plaintext_value", null)
-}
-
-resource "github_actions_variable" "this" {
-  for_each = {
-    for v in var.actions_variables : v.variable_name => v
-    if !contains(keys(v), "environment")
-  }
-
-  repository    = github_repository.this[0].name
-  variable_name = each.value.variable_name
-  value         = each.value.value
-}
-
-resource "github_actions_environment_variable" "this" {
-  for_each = {
-    for v in var.actions_variables : "${v.environment}/${v.variable_name}" => v
-    if contains(keys(v), "environment")
-  }
-
-  repository    = github_repository.this[0].name
-  environment   = each.value.environment
-  variable_name = each.value.variable_name
-  value         = each.value.value
-}
-
-# Codespaces
-# ============================================================================
-resource "github_codespaces_secret" "this" {
-  for_each = { for v in var.codespaces_secrets : v.secret_name => v }
-
-  repository      = github_repository.this[0].name
-  secret_name     = each.value.secret_name
-  encrypted_value = lookup(each.value, "encrypted_value", null)
-  plaintext_value = lookup(each.value, "plaintext_value", null)
-}
-
 # Dependabot
 # ============================================================================
-resource "github_dependabot_secret" "this" {
-  for_each = { for v in var.dependabot_secrets : v.secret_name => v }
-
-  repository      = github_repository.this[0].name
-  secret_name     = each.value.secret_name
-  encrypted_value = lookup(each.value, "encrypted_value", null)
-  plaintext_value = lookup(each.value, "plaintext_value", null)
-}
-
 resource "github_repository_dependabot_security_updates" "this" {
   repository = github_repository.this[0].name
   enabled    = var.dependabot_security_updates_enabled
