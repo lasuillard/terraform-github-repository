@@ -1,0 +1,29 @@
+{
+  "name": "lasuillard/terraform-github-repository",
+  "image": "mcr.microsoft.com/devcontainers/base:1-bookworm",
+  "features": {
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+    "ghcr.io/devcontainers/features/terraform:1": {},
+    "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {}
+  },
+  "onCreateCommand": "./.devcontainer/onCreateCommand.sh",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ldez.ignore-files",
+        "gruntfuggly.todo-tree",
+        "redhat.vscode-yaml",
+        "streetsidesoftware.code-spell-checker",
+        "editorconfig.editorconfig",
+        "vivaxy.vscode-conventional-commits",
+        "svelte.svelte-vscode",
+        "jock.svg",
+        "bradlc.vscode-tailwindcss",
+        "vitest.explorer",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "ms-playwright.playwright"
+      ]
+    }
+  }
+}
