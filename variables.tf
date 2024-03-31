@@ -291,36 +291,51 @@ variable "issue_labels_authoritative" {
 }
 
 variable "collaborators" {
-  default = []
+  description = "List of collaboratos."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "collaborators_authoritative" {
-  type    = bool
-  default = false
+  description = "Whether collaborators should be managed in authoritative way. If set `true`, `github_repository_collaborators` resource will be used."
+  type        = bool
+  default     = false
 }
 
 variable "webhooks" {
-  default = []
+  description = "List of webhooks."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "branches" {
-  default = []
+  description = "List of branches to create."
+  type        = list(map(string))
+  default     = []
 }
 
 variable "branch_protections" {
-  default = []
+  description = "Branch protection rules."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "rulesets" {
-  default = []
+  description = "Repository rulesets."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "tag_protections" {
-  default = []
+  description = "Tag protection rules."
+  type        = list(map(string))
+  default     = []
 }
 
 variable "actions_repository_permissions" {
-  default = {}
+  description = "Repository GitHub Actions permissions."
+  type        = map(any)
+  default     = {}
 }
 
 variable "codespaces_secrets" {
@@ -336,22 +351,31 @@ variable "dependabot_secrets" {
 }
 
 variable "dependabot_security_updates_enabled" {
-  type    = bool
-  default = false
+  description = "Whether to enable Dependabot security updates."
+  type        = bool
+  default     = false
 }
 
 variable "deploy_keys" {
-  default = []
+  description = "Repository deploy keys."
+  type        = list(map(string))
+  default     = []
 }
 
 variable "environments" {
-  default = []
+  description = "Environments in repository."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "environment_deployment_policies" {
-  default = []
+  description = "Deployment policies for environments."
+  type        = list(map(any))
+  default     = []
 }
 
 variable "autolink_references" {
-  default = []
+  description = "Autolink references."
+  type        = list(map(string))
+  default     = []
 }
