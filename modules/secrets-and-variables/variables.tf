@@ -1,3 +1,9 @@
+variable "create" {
+  description = "Whether to create this module or not."
+  type        = bool
+  default     = true
+}
+
 variable "repository" {
   description = "The name of the repository."
   type        = string
