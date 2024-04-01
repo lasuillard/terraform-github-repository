@@ -18,7 +18,7 @@ Terraform module to create GitHub repository and relevant resources.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
 
 ## Modules
 
