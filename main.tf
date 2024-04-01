@@ -187,23 +187,65 @@ resource "github_branch_default" "this" {
 }
 
 resource "github_branch" "this" {
-  for_each = { for b in var.branches : b.branch => b }
+  for_each = { for k, v in var.branches : k => v if var.create }
 
   repository    = github_repository.this[0].name
-  branch        = each.value.branch
-  source_branch = lookup(each.value, "source_branch", null)
-  source_sha    = lookup(each.value, "source_sha", null)
+  branch        = each.key
+  source_branch = try(each.value.source_branch, null)
+  source_sha    = try(each.value.source_sha, null)
+}
+
+resource "github_branch_protection" "this" {
+  for_each = { for k, v in var.branch_protections : v.pattern => v if var.create }
+
+  repository_id                   = github_repository.this[0].name
+  pattern                         = each.value.pattern
+  enforce_admins                  = try(each.value.enforce_admins, null)
+  require_signed_commits          = try(each.value.require_signed_commits, null)
+  required_linear_history         = try(each.value.required_linear_history, null)
+  require_conversation_resolution = try(each.value.require_conversation_resolution, null)
+
+  dynamic "required_status_checks" {
+    for_each = each.value.required_status_checks != null ? [each.value.required_status_checks] : []
+
+    content {
+      strict   = try(required_status_checks.value.strict, null)
+      contexts = try(required_status_checks.value.contexts, null)
+    }
+  }
+
+  dynamic "required_pull_request_reviews" {
+    for_each = each.value.required_pull_request_reviews != null ? [each.value.required_pull_request_reviews] : []
+
+    content {
+      dismiss_stale_reviews           = try(required_pull_request_reviews.value.dismiss_stale_reviews, null)
+      restrict_dismissals             = try(required_pull_request_reviews.value.restrict_dismissals, null)
+      dismissal_restrictions          = try(required_pull_request_reviews.value.dismissal_restrictions, null)
+      pull_request_bypassers          = try(required_pull_request_reviews.value.pull_request_bypassers, null)
+      require_code_owner_reviews      = try(required_pull_request_reviews.value.require_code_owner_reviews, null)
+      required_approving_review_count = try(required_pull_request_reviews.value.required_approving_review_count, null)
+      require_last_push_approval      = try(required_pull_request_reviews.value.require_last_push_approval, null)
+    }
+  }
+
+  dynamic "restrict_pushes" {
+    for_each = each.value.restrict_pushes != null ? [each.value.restrict_pushes] : []
+
+    content {
+      blocks_creations = try(restrict_pushes.value["blocks_creations"], null)
+      push_allowances  = try(restrict_pushes.value["push_allowances"], null)
+    }
+  }
+
+  force_push_bypassers = try(each.value.force_push_bypassers, null)
+  allows_deletions     = try(each.value.allows_deletions, null)
+  allows_force_pushes  = try(each.value.allows_force_pushes, null)
+  lock_branch          = try(each.value.lock_branch, null)
 }
 
 # TODO
-# resource "github_branch_protection" "this" {
-#   repository = github_repository.this[0].name
-
-# }
-
 # resource "github_repository_ruleset" "this" {
 #   repository = github_repository.this[0].name
-
 # }
 
 resource "github_repository_tag_protection" "this" {

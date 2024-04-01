@@ -17,6 +17,17 @@ module "repository" {
   squash_merge_commit_title   = "COMMIT_OR_PR_TITLE"
   visibility                  = "public"
 
+  branches = {
+    develop = {}
+  }
+
+  branch_protections = [
+    {
+      pattern                = "develop"
+      require_signed_commits = true
+    }
+  ]
+
   actions_secrets = [
     {
       secret_name     = "SENSITIVE_API_KEY"

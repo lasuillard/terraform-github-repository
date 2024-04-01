@@ -297,15 +297,45 @@ variable "webhooks" {
 }
 
 variable "branches" {
-  description = "List of branches to create."
-  type        = list(map(string))
-  default     = []
+  description = "Map of branch name and configuration to create."
+  type = map(object({
+    source_branch = optional(string)
+    source_sha    = optional(string)
+  }))
+  default = {}
 }
 
 variable "branch_protections" {
   description = "Branch protection rules."
-  type        = list(map(any))
-  default     = []
+  type = list(object({
+    pattern                         = string
+    enforce_admins                  = optional(bool)
+    require_signed_commits          = optional(bool)
+    required_linear_history         = optional(bool)
+    require_conversation_resolution = optional(bool)
+    required_status_checks = optional(object({
+      strict   = optional(bool)
+      contexts = optional(set(string))
+    }))
+    required_pull_request_reviews = optional(object({
+      dismiss_stale_reviews           = optional(bool)
+      restrict_dismissals             = optional(bool)
+      dismissal_restrictions          = optional(set(string))
+      pull_request_bypassers          = optional(set(string))
+      require_code_owner_reviews      = optional(bool)
+      required_approving_review_count = optional(number)
+      require_last_push_approval      = optional(bool)
+    }))
+    restrict_pushes = optional(object({
+      blocks_creations = optional(bool)
+      push_allowances  = optional(set(string))
+    }))
+    force_push_bypassers = optional(set(string))
+    allows_deletions     = optional(bool)
+    allows_force_pushes  = optional(bool)
+    lock_branch          = optional(bool)
+  }))
+  default = []
 }
 
 variable "rulesets" {
