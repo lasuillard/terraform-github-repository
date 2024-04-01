@@ -252,16 +252,12 @@ variable "allow_update_branch" {
   default     = null
 }
 
-variable "actions_secrets" {
-  description = "GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified."
-  type        = list(map(string))
-  default     = []
-}
-
-variable "actions_variables" {
-  description = "GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified."
-  type        = list(map(string))
-  default     = []
+variable "actions_repository_access_level" {
+  description = <<-EOT
+Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.
+EOT
+  type        = string
+  default     = "none"
 }
 
 variable "files" {
@@ -280,4 +276,155 @@ variable "issue_labels_authoritative" {
   description = "Whether issue labels managed in authoritative ways. If `true`, issue labels will be created using `github_issue_labels` resource type, possibly causing all the labels not listed removed."
   type        = bool
   default     = false
+}
+
+variable "collaborators" {
+  description = "List of collaboratos."
+  type        = list(map(any))
+  default     = []
+}
+
+variable "collaborators_authoritative" {
+  description = "Whether collaborators should be managed in authoritative way. If set `true`, `github_repository_collaborators` resource will be used."
+  type        = bool
+  default     = false
+}
+
+variable "webhooks" {
+  description = "List of webhooks."
+  type        = list(map(any))
+  default     = []
+}
+
+variable "branches" {
+  description = "Map of branch name and configuration to create."
+  type = map(object({
+    source_branch = optional(string)
+    source_sha    = optional(string)
+  }))
+  default = {}
+}
+
+variable "branch_protections" {
+  description = "Branch protection rules."
+  type = list(object({
+    pattern                         = string
+    enforce_admins                  = optional(bool)
+    require_signed_commits          = optional(bool)
+    required_linear_history         = optional(bool)
+    require_conversation_resolution = optional(bool)
+    required_status_checks = optional(object({
+      strict   = optional(bool)
+      contexts = optional(set(string))
+    }))
+    required_pull_request_reviews = optional(object({
+      dismiss_stale_reviews           = optional(bool)
+      restrict_dismissals             = optional(bool)
+      dismissal_restrictions          = optional(set(string))
+      pull_request_bypassers          = optional(set(string))
+      require_code_owner_reviews      = optional(bool)
+      required_approving_review_count = optional(number)
+      require_last_push_approval      = optional(bool)
+    }))
+    restrict_pushes = optional(object({
+      blocks_creations = optional(bool)
+      push_allowances  = optional(set(string))
+    }))
+    force_push_bypassers = optional(set(string))
+    allows_deletions     = optional(bool)
+    allows_force_pushes  = optional(bool)
+    lock_branch          = optional(bool)
+  }))
+  default = []
+}
+
+variable "rulesets" {
+  description = "Repository rulesets."
+  type        = list(map(any))
+  default     = []
+}
+
+variable "tag_protections" {
+  description = "Tag protection rules."
+  type        = list(map(string))
+  default     = []
+}
+
+variable "actions_repository_permissions" {
+  description = "Repository GitHub Actions permissions."
+  type        = map(any)
+  default     = {}
+}
+
+variable "dependabot_security_updates_enabled" {
+  description = "Whether to enable Dependabot security updates."
+  type        = bool
+  default     = false
+}
+
+variable "deploy_keys" {
+  description = "Repository deploy keys."
+  type        = list(map(string))
+  default     = []
+}
+
+variable "environments" {
+  description = "Environments in repository."
+  type        = list(map(any))
+  default     = []
+}
+
+variable "environment_deployment_policies" {
+  description = "Deployment policies for environments."
+  type        = list(map(any))
+  default     = []
+}
+
+variable "autolink_references" {
+  description = "Autolink references."
+  type        = list(map(string))
+  default     = []
+}
+
+variable "actions_secrets" {
+  description = "GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
+}
+
+variable "actions_variables" {
+  description = "GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified."
+  type = list(object({
+    environment   = optional(string)
+    variable_name = string
+    value         = optional(string)
+  }))
+  default = []
+}
+
+variable "codespaces_secrets" {
+  description = "Codespaces secrets for this repository."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
+}
+
+variable "dependabot_secrets" {
+  description = "Dependabot secrets for this repository."
+  type = list(object({
+    environment     = optional(string)
+    secret_name     = string
+    encrypted_value = optional(string)
+    plaintext_value = optional(string)
+  }))
+  default = []
 }
