@@ -18,7 +18,9 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_repository"></a> [repository](#module\_repository) | ../../ | n/a |
+| <a name="module_authoritatve"></a> [authoritatve](#module\_authoritatve) | ../../ | n/a |
+| <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
+| <a name="module_simple"></a> [simple](#module\_simple) | ../../ | n/a |
 
 ## Resources
 
