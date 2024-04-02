@@ -342,13 +342,15 @@ resource "github_repository_environment_deployment_policy" "this" {
 # ============================================================================
 # NOTE: Skipped milestone, project and pull request resources
 resource "github_issue_label" "this" {
-  count = length(var.issue_labels_authoritative ? [] : var.issue_labels)
+  for_each = {
+    for index, v in var.issue_labels_authoritative ? [] : var.issue_labels :
+    index => v
+  }
 
-  repository = github_repository.this[0].name
-
-  name        = var.issue_labels[count.index].name
-  description = lookup(var.issue_labels[count.index], "description", null)
-  color       = trimprefix(var.issue_labels[count.index].color, "#")
+  repository  = github_repository.this[0].name
+  name        = each.value.name
+  color       = trimprefix(each.value.color, "#")
+  description = try(each.value.description, null)
 }
 
 resource "github_issue_labels" "this" {
@@ -362,7 +364,7 @@ resource "github_issue_labels" "this" {
     content {
       name        = label.value.name
       color       = label.value.color
-      description = lookup(label.value, "description", null)
+      description = try(label.value.description, null)
     }
   }
 }

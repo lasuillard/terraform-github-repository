@@ -300,8 +300,12 @@ variable "files" {
 
 variable "issue_labels" {
   description = "Issue labels. Starting prefix \"#\" in `color` will be ignored."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    name        = string
+    color       = string
+    description = optional(string)
+  }))
+  default = []
 }
 
 variable "issue_labels_authoritative" {

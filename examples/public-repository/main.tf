@@ -59,6 +59,15 @@ EOT
     }
   ]
 
+  issue_labels = [
+    {
+      name        = "Urgent"
+      color       = "#FF0000"
+      description = "Something urgent"
+    }
+  ]
+  issue_labels_authoritative = false
+
   branches = {
     develop = {}
     gh-pages = {
@@ -101,7 +110,7 @@ EOT
 module "authoritatve" {
   source = "../../"
 
-  name = "authoritative-repository"
+  name = "authoritative"
 
   collaborators = {
     authoritative = {
@@ -118,4 +127,13 @@ module "authoritatve" {
     }
   }
   collaborators_authoritative = true
+
+  issue_labels = [
+    {
+      name        = "Urgent"
+      color       = "#FF0000"
+      description = "Something urgent"
+    }
+  ]
+  issue_labels_authoritative = true
 }
