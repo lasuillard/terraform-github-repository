@@ -215,8 +215,19 @@ The repository's security and analysis configuration.
 
 See [Security and Analysis Configuration](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#security-and-analysis-configuration) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    advanced_security = optional(object({
+      status = string
+    }))
+    secret_scanning = optional(object({
+      status = string
+    }))
+    secret_scanning_push_protection = optional(object({
+      status = string
+    }))
+  })
+  nullable = true
+  default  = null
 }
 
 variable "topics" {

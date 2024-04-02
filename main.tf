@@ -49,11 +49,11 @@ resource "github_repository" "this" {
   }
 
   dynamic "security_and_analysis" {
-    for_each = length(var.security_and_analysis) > 0 ? [var.security_and_analysis] : []
+    for_each = var.security_and_analysis != null ? [var.security_and_analysis] : []
 
     content {
       dynamic "advanced_security" {
-        for_each = length(security_and_analysis.value.advanced_security) > 0 ? [security_and_analysis.value.advanced_security] : []
+        for_each = security_and_analysis.value.advanced_security != null ? [security_and_analysis.value.advanced_security] : []
 
         content {
           status = advanced_security.value.status
@@ -61,7 +61,7 @@ resource "github_repository" "this" {
       }
 
       dynamic "secret_scanning" {
-        for_each = length(security_and_analysis.value.secret_scanning) > 0 ? [security_and_analysis.value.secret_scanning] : []
+        for_each = security_and_analysis.value.secret_scanning != null ? [security_and_analysis.value.secret_scanning] : []
 
         content {
           status = secret_scanning.value.status
@@ -69,7 +69,7 @@ resource "github_repository" "this" {
       }
 
       dynamic "secret_scanning_push_protection" {
-        for_each = length(security_and_analysis.value.secret_scanning_push_protection) > 0 ? [security_and_analysis.value.secret_scanning_push_protection] : []
+        for_each = security_and_analysis.value.secret_scanning_push_protection != null ? [security_and_analysis.value.secret_scanning_push_protection] : []
 
         content {
           status = secret_scanning_push_protection.value.status

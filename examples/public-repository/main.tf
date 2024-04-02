@@ -24,6 +24,15 @@ module "repository" {
     }
   }
 
+  security_and_analysis = {
+    advanced_security = {
+      status = "enabled"
+    }
+    secret_scanning = {
+      status = "enabled"
+    }
+  }
+
   branches = {
     develop = {}
     gh-pages = {
