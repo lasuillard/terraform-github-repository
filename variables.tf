@@ -225,7 +225,7 @@ The list of topics of the repository.
 NOTE: This attribute is not compatible with the `github_repository_topics` resource. Use one of them.
 `github_repository_topics` is only meant to be used if the repository itself is not handled via terraform, for example if it's only read as a datasource (see issue [#1845](https://github.com/integrations/terraform-provider-github/issues/1845)).
 EOT
-  type        = list(string)
+  type        = set(string)
   default     = null
 }
 
