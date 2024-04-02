@@ -247,8 +247,13 @@ Use a template repository to create this resource.
 
 See [Template Repositories](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#template-repositories) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    owner                = string
+    repository           = string
+    include_all_branches = optional(bool)
+  })
+  nullable = true
+  default  = null
 }
 
 variable "vulnerability_alerts" {

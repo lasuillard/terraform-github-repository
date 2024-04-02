@@ -81,12 +81,12 @@ resource "github_repository" "this" {
   topics = var.topics
 
   dynamic "template" {
-    for_each = length(var.template) > 0 ? [var.template] : []
+    for_each = var.template != null ? [var.template] : []
 
     content {
       owner                = template.value.owner
       repository           = template.value.repository
-      include_all_branches = template.value.include_all_branches
+      include_all_branches = try(template.value.include_all_branches, null)
     }
   }
 
