@@ -478,7 +478,7 @@ variable "rulesets" {
 
 variable "tag_protections" {
   description = "Tag protection rules."
-  type        = list(map(string))
+  type        = list(string)
   default     = []
 }
 

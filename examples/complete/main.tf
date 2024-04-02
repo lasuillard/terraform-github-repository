@@ -11,8 +11,8 @@ module "simple" {
 module "disabled" {
   source = "../../"
 
-  name   = "do-not-create"
   create = false
+  name   = "do-not-create"
 }
 
 module "complete" {
@@ -20,15 +20,15 @@ module "complete" {
 
   name                        = "complete"
   description                 = "An complete example repository."
+  visibility                  = "private"
   allow_auto_merge            = false
   allow_merge_commit          = true
   allow_rebase_merge          = true
-  allow_update_branch         = null
   archive_on_destroy          = true
   delete_branch_on_merge      = false
+  web_commit_signoff_required = true
   squash_merge_commit_message = "COMMIT_MESSAGES"
   squash_merge_commit_title   = "COMMIT_OR_PR_TITLE"
-  visibility                  = "public"
 
   pages = {
     source = {
@@ -45,6 +45,22 @@ module "complete" {
       status = "enabled"
     }
   }
+
+  topics = ["terraform", "github"]
+
+  vulnerability_alerts = true
+  allow_update_branch  = true
+
+  files = [
+    {
+      file    = ".github/pull_request_template.md"
+      content = <<-EOT
+Just an pull request template.
+
+- [ ] Are you OK?
+EOT
+    }
+  ]
 
   collaborators = {
     non_authoritative = [
@@ -65,33 +81,7 @@ module "complete" {
     }
   ]
 
-  files = [
-    {
-      file    = ".github/pull_request_template.md"
-      content = <<-EOT
-Just an pull request template.
-
-- [ ] Are you OK?
-EOT
-    }
-  ]
-
-  issue_labels = [
-    {
-      name        = "Urgent"
-      color       = "#FF0000"
-      description = "Something urgent"
-    }
-  ]
-  issue_labels_authoritative = false
-
-  autolink_references = [
-    {
-      key_prefix          = "JIRA-"
-      target_url_template = "https://domain.jira/?issue_key=<num>"
-      is_alphanumeric     = false
-    }
-  ]
+  default_branch = "main"
 
   branches = {
     develop = {}
@@ -142,6 +132,29 @@ EOT
     }
   ]
 
+  tag_protections = ["v*"]
+
+  actions_repository_access_level = "user"
+  actions_repository_permissions = {
+    allowed_actions = "all"
+  }
+
+  environments = {
+    dev  = {}
+    prod = {}
+  }
+
+  deployment_branch_policies = [
+    {
+      environment    = "dev"
+      branch_pattern = "develop"
+    },
+    {
+      environment    = "prod"
+      branch_pattern = "main"
+    }
+  ]
+
   actions_secrets = [
     {
       secret_name     = "SENSITIVE_API_KEY"
@@ -163,6 +176,25 @@ EOT
       environment   = "prod"
       variable_name = "SOME_VAR"
       value         = "potato-chips"
+    }
+  ]
+
+  dependabot_security_updates_enabled = true
+
+  issue_labels = [
+    {
+      name        = "Urgent"
+      color       = "#FF0000"
+      description = "Something urgent"
+    }
+  ]
+  issue_labels_authoritative = false
+
+  autolink_references = [
+    {
+      key_prefix          = "JIRA-"
+      target_url_template = "https://domain.jira/?issue_key=<num>"
+      is_alphanumeric     = false
     }
   ]
 }

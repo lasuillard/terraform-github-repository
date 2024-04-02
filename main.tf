@@ -253,10 +253,10 @@ module "rulesets" {
 }
 
 resource "github_repository_tag_protection" "this" {
-  for_each = { for tp in var.tag_protections : tp.pattern => tp }
+  for_each = toset(var.tag_protections)
 
   repository = github_repository.this[0].name
-  pattern    = each.value.pattern
+  pattern    = each.value
 }
 
 # GitHub Actions

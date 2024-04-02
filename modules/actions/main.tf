@@ -52,10 +52,10 @@ resource "github_repository_environment" "this" {
 }
 
 resource "github_repository_environment_deployment_policy" "this" {
-  for_each = toset(var.deployment_branch_policies)
+  for_each = { for i, v in var.deployment_branch_policies : i => v }
 
   repository     = var.repository
-  environment    = each.value.environment_name
+  environment    = each.value.environment
   branch_pattern = each.value.branch_pattern
 }
 
