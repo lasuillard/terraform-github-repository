@@ -20,6 +20,7 @@ No providers.
 |------|--------|---------|
 | <a name="module_authoritatve"></a> [authoritatve](#module\_authoritatve) | ../../ | n/a |
 | <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
+| <a name="module_disabled"></a> [disabled](#module\_disabled) | ../.. | n/a |
 | <a name="module_simple"></a> [simple](#module\_simple) | ../../ | n/a |
 
 ## Resources

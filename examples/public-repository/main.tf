@@ -8,6 +8,13 @@ module "simple" {
   name = "simple"
 }
 
+module "disabled" {
+  source = "../.."
+
+  name   = "do-not-create"
+  create = false
+}
+
 module "complete" {
   source = "../../"
 
