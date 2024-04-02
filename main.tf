@@ -140,13 +140,13 @@ resource "github_repository_file" "this" {
   }
 
   repository          = github_repository.this[0].name
-  branch              = lookup(each.value, "branch", github_branch_default.this[0].branch)
+  branch              = try(each.value.branch, github_branch_default.this[0].branch)
   file                = each.value.file
   content             = each.value.content
-  commit_message      = lookup(each.value, "commit_message", null)
-  commit_author       = lookup(each.value, "commit_author", null)
-  commit_email        = lookup(each.value, "commit_email", null)
-  overwrite_on_create = lookup(each.value, "overwrite_on_create", false)
+  commit_message      = try(each.value.commit_message, null)
+  commit_author       = try(each.value.commit_author, null)
+  commit_email        = try(each.value.commit_email, null)
+  overwrite_on_create = try(each.value.overwrite_on_create, null)
 }
 
 resource "github_repository_webhook" "this" {

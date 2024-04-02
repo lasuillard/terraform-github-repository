@@ -286,8 +286,16 @@ EOT
 
 variable "files" {
   description = "Repository files."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    file                = string
+    content             = string
+    branch              = optional(string)
+    commit_author       = optional(string)
+    commit_email        = optional(string)
+    commit_message      = optional(string)
+    overwrite_on_create = optional(bool)
+  }))
+  default = []
 }
 
 variable "issue_labels" {

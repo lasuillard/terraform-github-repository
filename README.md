@@ -81,7 +81,7 @@ Terraform module to create GitHub repository and relevant resources.
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |
 | <a name="input_environment_deployment_policies"></a> [environment\_deployment\_policies](#input\_environment\_deployment\_policies) | Deployment policies for environments. | `list(map(any))` | `[]` | no |
 | <a name="input_environments"></a> [environments](#input\_environments) | Environments in repository. | `list(map(any))` | `[]` | no |
-| <a name="input_files"></a> [files](#input\_files) | Repository files. | `list(map(string))` | `[]` | no |
+| <a name="input_files"></a> [files](#input\_files) | Repository files. | <pre>list(object({<br>    file                = string<br>    content             = string<br>    branch              = optional(string)<br>    commit_author       = optional(string)<br>    commit_email        = optional(string)<br>    commit_message      = optional(string)<br>    overwrite_on_create = optional(bool)<br>  }))</pre> | `[]` | no |
 | <a name="input_gitignore_template"></a> [gitignore\_template](#input\_gitignore\_template) | Use the name of the template without the extension. For example, `"Haskell"`. | `string` | `null` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Set to `true` to enable GitHub Discussions on the repository. | `bool` | `false` | no |
 | <a name="input_has_downloads"></a> [has\_downloads](#input\_has\_downloads) | Set to `true` to enable the (deprecated) downloads features on the repository. | `bool` | `null` | no |

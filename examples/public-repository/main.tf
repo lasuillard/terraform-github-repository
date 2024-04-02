@@ -48,6 +48,17 @@ module "complete" {
   }
   collaborators_authoritative = false
 
+  files = [
+    {
+      file    = ".github/pull_request_template.md"
+      content = <<-EOT
+Just an pull request template.
+
+- [ ] Are you OK?
+EOT
+    }
+  ]
+
   branches = {
     develop = {}
     gh-pages = {
