@@ -244,10 +244,13 @@ resource "github_branch_protection" "this" {
   lock_branch          = try(each.value.lock_branch, null)
 }
 
-# TODO
-# resource "github_repository_ruleset" "this" {
-#   repository = github_repository.this[0].name
-# }
+module "rulesets" {
+  source = "./modules/rulesets"
+  count  = var.create ? 1 : 0
+
+  repository = github_repository.this[0].name
+  rulesets   = var.rulesets
+}
 
 resource "github_repository_tag_protection" "this" {
   for_each = { for tp in var.tag_protections : tp.pattern => tp }

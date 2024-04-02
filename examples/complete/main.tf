@@ -9,7 +9,7 @@ module "simple" {
 }
 
 module "disabled" {
-  source = "../.."
+  source = "../../"
 
   name   = "do-not-create"
   create = false
@@ -104,6 +104,41 @@ EOT
     {
       pattern                = "develop"
       require_signed_commits = true
+    }
+  ]
+
+  rulesets = [
+    {
+      name        = "example"
+      target      = "branch"
+      enforcement = "active"
+
+      conditions = {
+        ref_name = {
+          include = ["~ALL"]
+          exclude = []
+        }
+      }
+
+      rules = {
+        creation                = true
+        update                  = true
+        deletion                = true
+        required_linear_history = true
+        required_signatures     = true
+
+        required_deployments = {
+          required_deployment_environments = ["test"]
+        }
+      }
+
+      bypass_actors = [
+        {
+          actor_id    = 13473
+          actor_type  = "Integration"
+          bypass_mode = "always"
+        }
+      ]
     }
   ]
 
