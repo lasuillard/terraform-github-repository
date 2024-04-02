@@ -304,8 +304,24 @@ variable "issue_labels_authoritative" {
 
 variable "collaborators" {
   description = "List of collaboratos."
-  type        = list(map(any))
-  default     = []
+  type = object({
+    non_authoritative = optional(list(object({
+      username                    = string
+      permission                  = optional(string)
+      permission_diff_suppression = optional(bool)
+    })))
+    authoritative = optional(object({
+      users = optional(list(object({
+        username   = string
+        permission = optional(string)
+      })))
+      teams = optional(list(object({
+        team_id    = string
+        permission = optional(string)
+      })))
+    }))
+  })
+  default = {}
 }
 
 variable "collaborators_authoritative" {

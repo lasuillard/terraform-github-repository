@@ -96,34 +96,37 @@ resource "github_repository" "this" {
 }
 
 resource "github_repository_collaborator" "this" {
-  count = length(var.collaborators_authoritative ? [] : var.collaborators)
+  for_each = {
+    for v in(var.collaborators_authoritative ? [] : coalesce(var.collaborators.non_authoritative, [])) :
+    v.username => v
+  }
 
   repository                  = github_repository.this[0].name
-  username                    = var.collaborators[count.index].username
-  permission                  = lookup(var.collaborators[count.index], "permission", null)
-  permission_diff_suppression = lookup(var.collaborators[count.index], "permission_diff_suppression", null)
+  username                    = each.value.username
+  permission                  = try(each.value.permission, null)
+  permission_diff_suppression = try(each.value.permission_diff_suppression, null)
 }
 
 resource "github_repository_collaborators" "this" {
-  count = length(var.collaborators_authoritative ? var.collaborators : [])
+  count = var.collaborators_authoritative ? 1 : 0
 
   repository = github_repository.this[0].name
 
   dynamic "user" {
-    for_each = lookup(var.collaborators[count.index], "users", [])
+    for_each = try(var.collaborators.authoritative.users, [])
 
     content {
-      permission = lookup(user.value, "permission", null)
       username   = user.value.username
+      permission = try(user.value.permission, null)
     }
   }
 
   dynamic "team" {
-    for_each = lookup(var.collaborators[count.index], "teams", [])
+    for_each = try(var.collaborators.authoritative.teams, [])
 
     content {
       team_id    = team.value.team_id
-      permission = lookup(team.value, "permission", null)
+      permission = try(team.value.permission, null)
     }
   }
 }

@@ -2,11 +2,17 @@ provider "github" {
   token = var.github_token
 }
 
-module "repository" {
+module "simple" {
   source = "../../"
 
-  name                        = "example-repository"
-  description                 = "An example repository."
+  name = "simple"
+}
+
+module "complete" {
+  source = "../../"
+
+  name                        = "complete"
+  description                 = "An complete example repository."
   allow_auto_merge            = false
   allow_merge_commit          = true
   allow_rebase_merge          = true
@@ -32,6 +38,15 @@ module "repository" {
       status = "enabled"
     }
   }
+
+  collaborators = {
+    non_authoritative = [
+      {
+        username = "some-username"
+      }
+    ]
+  }
+  collaborators_authoritative = false
 
   branches = {
     develop = {}
@@ -70,4 +85,26 @@ module "repository" {
       value         = "potato-chips"
     }
   ]
+}
+
+module "authoritatve" {
+  source = "../../"
+
+  name = "authoritative-repository"
+
+  collaborators = {
+    authoritative = {
+      users = [
+        {
+          username = "some-username"
+        }
+      ],
+      teams = [
+        {
+          team_id = "some-team-id"
+        }
+      ]
+    }
+  }
+  collaborators_authoritative = true
 }
