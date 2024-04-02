@@ -32,28 +32,28 @@ resource "github_repository" "this" {
   archive_on_destroy          = var.archive_on_destroy
 
   dynamic "pages" {
-    for_each = length(var.pages) > 0 ? [var.pages] : []
+    for_each = var.pages != null ? [var.pages] : []
 
     content {
       dynamic "source" {
-        for_each = length(pages.value.source) > 0 ? [pages.value.source] : []
+        for_each = try([pages.value.source], [])
 
         content {
           branch = source.value.branch
-          path   = source.value.path
+          path   = try(source.value.path, null)
         }
       }
-      build_type = pages.value.build_type
-      cname      = pages.value.cname
+      build_type = try(pages.value.build_type, null)
+      cname      = try(pages.value.cname, null)
     }
   }
 
   dynamic "security_and_analysis" {
-    for_each = length(var.security_and_analysis) > 0 ? [var.security_and_analysis] : []
+    for_each = var.security_and_analysis != null ? [var.security_and_analysis] : []
 
     content {
       dynamic "advanced_security" {
-        for_each = length(security_and_analysis.value.advanced_security) > 0 ? [security_and_analysis.value.advanced_security] : []
+        for_each = security_and_analysis.value.advanced_security != null ? [security_and_analysis.value.advanced_security] : []
 
         content {
           status = advanced_security.value.status
@@ -61,7 +61,7 @@ resource "github_repository" "this" {
       }
 
       dynamic "secret_scanning" {
-        for_each = length(security_and_analysis.value.secret_scanning) > 0 ? [security_and_analysis.value.secret_scanning] : []
+        for_each = security_and_analysis.value.secret_scanning != null ? [security_and_analysis.value.secret_scanning] : []
 
         content {
           status = secret_scanning.value.status
@@ -69,7 +69,7 @@ resource "github_repository" "this" {
       }
 
       dynamic "secret_scanning_push_protection" {
-        for_each = length(security_and_analysis.value.secret_scanning_push_protection) > 0 ? [security_and_analysis.value.secret_scanning_push_protection] : []
+        for_each = security_and_analysis.value.secret_scanning_push_protection != null ? [security_and_analysis.value.secret_scanning_push_protection] : []
 
         content {
           status = secret_scanning_push_protection.value.status
@@ -81,12 +81,12 @@ resource "github_repository" "this" {
   topics = var.topics
 
   dynamic "template" {
-    for_each = length(var.template) > 0 ? [var.template] : []
+    for_each = var.template != null ? [var.template] : []
 
     content {
       owner                = template.value.owner
       repository           = template.value.repository
-      include_all_branches = template.value.include_all_branches
+      include_all_branches = try(template.value.include_all_branches, null)
     }
   }
 
@@ -96,34 +96,37 @@ resource "github_repository" "this" {
 }
 
 resource "github_repository_collaborator" "this" {
-  count = length(var.collaborators_authoritative ? [] : var.collaborators)
+  for_each = {
+    for v in(var.collaborators_authoritative ? [] : coalesce(var.collaborators.non_authoritative, [])) :
+    v.username => v
+  }
 
   repository                  = github_repository.this[0].name
-  username                    = var.collaborators[count.index].username
-  permission                  = lookup(var.collaborators[count.index], "permission", null)
-  permission_diff_suppression = lookup(var.collaborators[count.index], "permission_diff_suppression", null)
+  username                    = each.value.username
+  permission                  = try(each.value.permission, null)
+  permission_diff_suppression = try(each.value.permission_diff_suppression, null)
 }
 
 resource "github_repository_collaborators" "this" {
-  count = length(var.collaborators_authoritative ? var.collaborators : [])
+  count = var.collaborators_authoritative ? 1 : 0
 
   repository = github_repository.this[0].name
 
   dynamic "user" {
-    for_each = lookup(var.collaborators[count.index], "users", [])
+    for_each = try(var.collaborators.authoritative.users, [])
 
     content {
-      permission = lookup(user.value, "permission", null)
       username   = user.value.username
+      permission = try(user.value.permission, null)
     }
   }
 
   dynamic "team" {
-    for_each = lookup(var.collaborators[count.index], "teams", [])
+    for_each = try(var.collaborators.authoritative.teams, [])
 
     content {
       team_id    = team.value.team_id
-      permission = lookup(team.value, "permission", null)
+      permission = try(team.value.permission, null)
     }
   }
 }
@@ -137,13 +140,13 @@ resource "github_repository_file" "this" {
   }
 
   repository          = github_repository.this[0].name
-  branch              = lookup(each.value, "branch", github_branch_default.this[0].branch)
+  branch              = try(each.value.branch, github_branch_default.this[0].branch)
   file                = each.value.file
   content             = each.value.content
-  commit_message      = lookup(each.value, "commit_message", null)
-  commit_author       = lookup(each.value, "commit_author", null)
-  commit_email        = lookup(each.value, "commit_email", null)
-  overwrite_on_create = lookup(each.value, "overwrite_on_create", false)
+  commit_message      = try(each.value.commit_message, null)
+  commit_author       = try(each.value.commit_author, null)
+  commit_email        = try(each.value.commit_email, null)
+  overwrite_on_create = try(each.value.overwrite_on_create, null)
 }
 
 resource "github_repository_webhook" "this" {
@@ -339,13 +342,15 @@ resource "github_repository_environment_deployment_policy" "this" {
 # ============================================================================
 # NOTE: Skipped milestone, project and pull request resources
 resource "github_issue_label" "this" {
-  count = length(var.issue_labels_authoritative ? [] : var.issue_labels)
+  for_each = {
+    for index, v in var.issue_labels_authoritative ? [] : var.issue_labels :
+    index => v
+  }
 
-  repository = github_repository.this[0].name
-
-  name        = var.issue_labels[count.index].name
-  description = lookup(var.issue_labels[count.index], "description", null)
-  color       = trimprefix(var.issue_labels[count.index].color, "#")
+  repository  = github_repository.this[0].name
+  name        = each.value.name
+  color       = trimprefix(each.value.color, "#")
+  description = try(each.value.description, null)
 }
 
 resource "github_issue_labels" "this" {
@@ -359,7 +364,7 @@ resource "github_issue_labels" "this" {
     content {
       name        = label.value.name
       color       = label.value.color
-      description = lookup(label.value, "description", null)
+      description = try(label.value.description, null)
     }
   }
 }
@@ -370,5 +375,5 @@ resource "github_repository_autolink_reference" "this" {
   repository          = github_repository.this[0].name
   key_prefix          = each.value.key_prefix
   target_url_template = each.value.target_url_template
-  is_alphanumeric     = lookup(each.value, "is_alphanumeric")
+  is_alphanumeric     = try(each.value.is_alphanumeric, null)
 }

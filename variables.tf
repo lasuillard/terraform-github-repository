@@ -197,8 +197,16 @@ The repository's GitHub Pages configuration.
 
 See [GitHub Pages Configuration](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#github-pages-configuration) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    source = optional(object({
+      branch = string
+      path   = optional(string)
+    }))
+    build_type = optional(string)
+    cname      = optional(string)
+  })
+  nullable = true
+  default  = null
 }
 
 variable "security_and_analysis" {
@@ -207,8 +215,19 @@ The repository's security and analysis configuration.
 
 See [Security and Analysis Configuration](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#security-and-analysis-configuration) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    advanced_security = optional(object({
+      status = string
+    }))
+    secret_scanning = optional(object({
+      status = string
+    }))
+    secret_scanning_push_protection = optional(object({
+      status = string
+    }))
+  })
+  nullable = true
+  default  = null
 }
 
 variable "topics" {
@@ -228,8 +247,13 @@ Use a template repository to create this resource.
 
 See [Template Repositories](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#template-repositories) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    owner                = string
+    repository           = string
+    include_all_branches = optional(bool)
+  })
+  nullable = true
+  default  = null
 }
 
 variable "vulnerability_alerts" {
@@ -262,14 +286,26 @@ EOT
 
 variable "files" {
   description = "Repository files."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    file                = string
+    content             = string
+    branch              = optional(string)
+    commit_author       = optional(string)
+    commit_email        = optional(string)
+    commit_message      = optional(string)
+    overwrite_on_create = optional(bool)
+  }))
+  default = []
 }
 
 variable "issue_labels" {
   description = "Issue labels. Starting prefix \"#\" in `color` will be ignored."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    name        = string
+    color       = string
+    description = optional(string)
+  }))
+  default = []
 }
 
 variable "issue_labels_authoritative" {
@@ -280,8 +316,24 @@ variable "issue_labels_authoritative" {
 
 variable "collaborators" {
   description = "List of collaboratos."
-  type        = list(map(any))
-  default     = []
+  type = object({
+    non_authoritative = optional(list(object({
+      username                    = string
+      permission                  = optional(string)
+      permission_diff_suppression = optional(bool)
+    })))
+    authoritative = optional(object({
+      users = optional(list(object({
+        username   = string
+        permission = optional(string)
+      })))
+      teams = optional(list(object({
+        team_id    = string
+        permission = optional(string)
+      })))
+    }))
+  })
+  default = {}
 }
 
 variable "collaborators_authoritative" {
@@ -292,8 +344,17 @@ variable "collaborators_authoritative" {
 
 variable "webhooks" {
   description = "List of webhooks."
-  type        = list(map(any))
-  default     = []
+  type = list(object({
+    events = set(string)
+    configuration = object({
+      url          = string
+      content_type = string
+      secret       = optional(string)
+      insecure_ssl = optional(bool)
+    })
+    active = optional(bool)
+  }))
+  default = []
 }
 
 variable "branches" {
@@ -382,8 +443,12 @@ variable "environment_deployment_policies" {
 
 variable "autolink_references" {
   description = "Autolink references."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    key_prefix          = string
+    target_url_template = string
+    is_alphanumeric     = optional(bool)
+  }))
+  default = []
 }
 
 variable "actions_secrets" {
