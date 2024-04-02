@@ -108,7 +108,7 @@ Terraform module to create GitHub repository and relevant resources.
 | <a name="input_visibility"></a> [visibility](#input\_visibility) | Can be `"public"` or `"private"`.<br><br>If your organization is associated with an enterprise account using GitHub Enterprise Cloud or GitHub Enterprise Server 2.20+, visibility can also be `"internal"`.<br>The `visibility` parameter overrides the `private` parameter." | `string` | `"private"` | no |
 | <a name="input_vulnerability_alerts"></a> [vulnerability\_alerts](#input\_vulnerability\_alerts) | Set to `true` to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings. | `bool` | `true` | no |
 | <a name="input_web_commit_signoff_required"></a> [web\_commit\_signoff\_required](#input\_web\_commit\_signoff\_required) | Require contributors to sign off on web-based commits. See more here. | `bool` | `false` | no |
-| <a name="input_webhooks"></a> [webhooks](#input\_webhooks) | List of webhooks. | `list(map(any))` | `[]` | no |
+| <a name="input_webhooks"></a> [webhooks](#input\_webhooks) | List of webhooks. | <pre>list(object({<br>    events = set(string)<br>    configuration = object({<br>      url          = string<br>      content_type = string<br>      secret       = optional(string)<br>      insecure_ssl = optional(bool)<br>    })<br>    active = optional(bool)<br>  }))</pre> | `[]` | no |
 
 ## Outputs
 

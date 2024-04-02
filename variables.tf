@@ -344,8 +344,17 @@ variable "collaborators_authoritative" {
 
 variable "webhooks" {
   description = "List of webhooks."
-  type        = list(map(any))
-  default     = []
+  type = list(object({
+    events = set(string)
+    configuration = object({
+      url          = string
+      content_type = string
+      secret       = optional(string)
+      insecure_ssl = optional(bool)
+    })
+    active = optional(bool)
+  }))
+  default = []
 }
 
 variable "branches" {

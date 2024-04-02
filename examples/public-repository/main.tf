@@ -48,6 +48,16 @@ module "complete" {
   }
   collaborators_authoritative = false
 
+  webhooks = [
+    {
+      events = ["issue_comment"]
+      configuration = {
+        url          = "https://some.webhook.url/path/to/receiver"
+        content_type = "json"
+      }
+    }
+  ]
+
   files = [
     {
       file    = ".github/pull_request_template.md"
