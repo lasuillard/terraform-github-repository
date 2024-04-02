@@ -32,19 +32,19 @@ resource "github_repository" "this" {
   archive_on_destroy          = var.archive_on_destroy
 
   dynamic "pages" {
-    for_each = length(var.pages) > 0 ? [var.pages] : []
+    for_each = var.pages != null ? [var.pages] : []
 
     content {
       dynamic "source" {
-        for_each = length(pages.value.source) > 0 ? [pages.value.source] : []
+        for_each = try([pages.value.source], [])
 
         content {
           branch = source.value.branch
-          path   = source.value.path
+          path   = try(source.value.path, null)
         }
       }
-      build_type = pages.value.build_type
-      cname      = pages.value.cname
+      build_type = try(pages.value.build_type, null)
+      cname      = try(pages.value.cname, null)
     }
   }
 

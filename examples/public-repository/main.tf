@@ -17,8 +17,18 @@ module "repository" {
   squash_merge_commit_title   = "COMMIT_OR_PR_TITLE"
   visibility                  = "public"
 
+  pages = {
+    source = {
+      branch = "gh-pages"
+      path   = "/docs"
+    }
+  }
+
   branches = {
     develop = {}
+    gh-pages = {
+      source_branch = "main"
+    }
   }
 
   branch_protections = [

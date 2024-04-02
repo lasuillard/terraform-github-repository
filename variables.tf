@@ -197,8 +197,16 @@ The repository's GitHub Pages configuration.
 
 See [GitHub Pages Configuration](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#github-pages-configuration) for details.
 EOT
-  type        = map(any)
-  default     = {}
+  type = object({
+    source = optional(object({
+      branch = string
+      path   = optional(string)
+    }))
+    build_type = optional(string)
+    cname      = optional(string)
+  })
+  nullable = true
+  default  = null
 }
 
 variable "security_and_analysis" {
