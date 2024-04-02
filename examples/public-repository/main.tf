@@ -68,6 +68,14 @@ EOT
   ]
   issue_labels_authoritative = false
 
+  autolink_references = [
+    {
+      key_prefix          = "JIRA-"
+      target_url_template = "https://domain.jira/?issue_key=<num>"
+      is_alphanumeric     = false
+    }
+  ]
+
   branches = {
     develop = {}
     gh-pages = {

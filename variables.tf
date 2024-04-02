@@ -434,8 +434,12 @@ variable "environment_deployment_policies" {
 
 variable "autolink_references" {
   description = "Autolink references."
-  type        = list(map(string))
-  default     = []
+  type = list(object({
+    key_prefix          = string
+    target_url_template = string
+    is_alphanumeric     = optional(bool)
+  }))
+  default = []
 }
 
 variable "actions_secrets" {

@@ -375,5 +375,5 @@ resource "github_repository_autolink_reference" "this" {
   repository          = github_repository.this[0].name
   key_prefix          = each.value.key_prefix
   target_url_template = each.value.target_url_template
-  is_alphanumeric     = lookup(each.value, "is_alphanumeric")
+  is_alphanumeric     = try(each.value.is_alphanumeric, null)
 }
