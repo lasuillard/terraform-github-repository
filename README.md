@@ -24,14 +24,13 @@ Terraform module to create GitHub repository and relevant resources.
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_actions"></a> [actions](#module\_actions) | ./modules/actions | n/a |
 | <a name="module_secrets_and_variables"></a> [secrets\_and\_variables](#module\_secrets\_and\_variables) | ./modules/secrets-and-variables | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
-| [github_actions_repository_access_level.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_repository_access_level) | resource |
-| [github_actions_repository_permissions.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_repository_permissions) | resource |
 | [github_branch.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch) | resource |
 | [github_branch_default.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
 | [github_branch_protection.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_protection) | resource |
@@ -42,9 +41,6 @@ Terraform module to create GitHub repository and relevant resources.
 | [github_repository_collaborator.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborator) | resource |
 | [github_repository_collaborators.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborators) | resource |
 | [github_repository_dependabot_security_updates.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_dependabot_security_updates) | resource |
-| [github_repository_deploy_key.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
-| [github_repository_environment.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment) | resource |
-| [github_repository_environment_deployment_policy.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment_deployment_policy) | resource |
 | [github_repository_file.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_file) | resource |
 | [github_repository_tag_protection.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_tag_protection) | resource |
 | [github_repository_webhook.this](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_webhook) | resource |
@@ -53,8 +49,8 @@ Terraform module to create GitHub repository and relevant resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_actions_repository_access_level"></a> [actions\_repository\_access\_level](#input\_actions\_repository\_access\_level) | Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`. | `string` | `"none"` | no |
-| <a name="input_actions_repository_permissions"></a> [actions\_repository\_permissions](#input\_actions\_repository\_permissions) | Repository GitHub Actions permissions. | `map(any)` | `{}` | no |
+| <a name="input_actions_repository_access_level"></a> [actions\_repository\_access\_level](#input\_actions\_repository\_access\_level) | Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.<br><br>If `null`, skip creation of `github_actions_repository_access_level` resource. | `string` | `null` | no |
+| <a name="input_actions_repository_permissions"></a> [actions\_repository\_permissions](#input\_actions\_repository\_permissions) | GitHub Actions permissions for a given repository. | <pre>object({<br>    allowed_actions = optional(string)<br>    enabled         = optional(bool)<br>    allowed_actions_config = optional(object({<br>      github_owned_allowed = bool<br>      patterns_allowed     = optional(set(string))<br>      verified_allowed     = optional(bool)<br>    }))<br>  })</pre> | `null` | no |
 | <a name="input_actions_secrets"></a> [actions\_secrets](#input\_actions\_secrets) | GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified. | <pre>list(object({<br>    environment     = optional(string)<br>    secret_name     = string<br>    encrypted_value = optional(string)<br>    plaintext_value = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_actions_variables"></a> [actions\_variables](#input\_actions\_variables) | GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified. | <pre>list(object({<br>    environment   = optional(string)<br>    variable_name = string<br>    value         = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_allow_auto_merge"></a> [allow\_auto\_merge](#input\_allow\_auto\_merge) | Set to `true` to allow auto-merging pull requests on the repository. | `bool` | `false` | no |
@@ -77,10 +73,10 @@ Terraform module to create GitHub repository and relevant resources.
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Automatically delete head branch after a pull request is merged. | `bool` | `false` | no |
 | <a name="input_dependabot_secrets"></a> [dependabot\_secrets](#input\_dependabot\_secrets) | Dependabot secrets for this repository. | <pre>list(object({<br>    environment     = optional(string)<br>    secret_name     = string<br>    encrypted_value = optional(string)<br>    plaintext_value = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_dependabot_security_updates_enabled"></a> [dependabot\_security\_updates\_enabled](#input\_dependabot\_security\_updates\_enabled) | Whether to enable Dependabot security updates. | `bool` | `false` | no |
-| <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | Repository deploy keys. | `list(map(string))` | `[]` | no |
+| <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | Deploy keys. | <pre>list(object({<br>    key       = string<br>    read_only = bool<br>    title     = string<br>  }))</pre> | `[]` | no |
+| <a name="input_deployment_branch_policies"></a> [deployment\_branch\_policies](#input\_deployment\_branch\_policies) | Deployment branch policies. | <pre>list(object({<br>    environment    = string<br>    branch_pattern = string<br>  }))</pre> | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `null` | no |
-| <a name="input_environment_deployment_policies"></a> [environment\_deployment\_policies](#input\_environment\_deployment\_policies) | Deployment policies for environments. | `list(map(any))` | `[]` | no |
-| <a name="input_environments"></a> [environments](#input\_environments) | Environments in repository. | `list(map(any))` | `[]` | no |
+| <a name="input_environments"></a> [environments](#input\_environments) | List of GitHub repository environments. | <pre>map(object({<br>    wait_timer          = optional(number)<br>    can_admins_bypass   = optional(bool)<br>    prevent_self_review = optional(bool)<br>    reviewers = optional(object({<br>      teams = optional(set(string))<br>      users = optional(set(string))<br>    }))<br>    deployment_branch_policy = optional(object({<br>      protected_branches     = bool<br>      custom_branch_policies = bool<br>    }))<br>  }))</pre> | `{}` | no |
 | <a name="input_files"></a> [files](#input\_files) | Repository files. | <pre>list(object({<br>    file                = string<br>    content             = string<br>    branch              = optional(string)<br>    commit_author       = optional(string)<br>    commit_email        = optional(string)<br>    commit_message      = optional(string)<br>    overwrite_on_create = optional(bool)<br>  }))</pre> | `[]` | no |
 | <a name="input_gitignore_template"></a> [gitignore\_template](#input\_gitignore\_template) | Use the name of the template without the extension. For example, `"Haskell"`. | `string` | `null` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Set to `true` to enable GitHub Discussions on the repository. | `bool` | `false` | no |

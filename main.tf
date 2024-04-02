@@ -174,8 +174,6 @@ module "secrets_and_variables" {
   count  = var.create ? 1 : 0
 
   repository         = github_repository.this[0].name
-  actions_secrets    = var.actions_secrets
-  actions_variables  = var.actions_variables
   codespaces_secrets = var.codespaces_secrets
   dependabot_secrets = var.dependabot_secrets
 }
@@ -260,27 +258,18 @@ resource "github_repository_tag_protection" "this" {
 
 # GitHub Actions
 # ============================================================================
-resource "github_actions_repository_access_level" "this" {
-  count        = var.create ? 1 : 0
-  repository   = github_repository.this[0].name
-  access_level = var.actions_repository_access_level
-}
+module "actions" {
+  source = "./modules/actions"
+  count  = var.create ? 1 : 0
 
-resource "github_actions_repository_permissions" "this" {
-  count           = var.create ? 1 : 0
-  repository      = github_repository.this[0].name
-  allowed_actions = lookup(var.actions_repository_permissions, "allowed_actions", "all")
-  enabled         = lookup(var.actions_repository_permissions, "enabled", true)
-
-  dynamic "allowed_actions_config" {
-    for_each = length(lookup(var.actions_repository_permissions, "allowed_actions_config", [])) > 0 ? [var.actions_repository_permissions.allowed_actions_config] : []
-
-    content {
-      github_owned_allowed = allowed_actions_config.value.github_owned_allowed
-      patterns_allowed     = lookup(allowed_actions_config.value, "patterns_allowed")
-      verified_allowed     = lookup(allowed_actions_config.value, "verified_allowed")
-    }
-  }
+  repository                 = github_repository.this[0].name
+  repository_access_level    = var.actions_repository_access_level
+  repository_permissions     = var.actions_repository_permissions
+  environments               = var.environments
+  deployment_branch_policies = var.deployment_branch_policies
+  deploy_keys                = var.deploy_keys
+  secrets                    = var.actions_secrets
+  variables                  = var.actions_variables
 }
 
 # Dependabot
@@ -289,53 +278,6 @@ resource "github_repository_dependabot_security_updates" "this" {
   count      = var.create ? 1 : 0
   repository = github_repository.this[0].name
   enabled    = var.dependabot_security_updates_enabled
-}
-
-# Environments & Deployments
-# ============================================================================
-resource "github_repository_deploy_key" "this" {
-  count = length(var.deploy_keys)
-
-  repository = github_repository.this[0].name
-  key        = var.deploy_keys[count.index].key
-  read_only  = var.deploy_keys[count.index].read_only
-  title      = var.deploy_keys[count.index].title
-}
-
-resource "github_repository_environment" "this" {
-  for_each = { for v in var.environments : v.environment => v }
-
-  repository          = github_repository.this[0].name
-  environment         = each.value.environment
-  wait_timer          = lookup(each.value, "wait_timer", null)
-  can_admins_bypass   = lookup(each.value, "can_admins_bypass", null)
-  prevent_self_review = lookup(each.value, "prevent_self_review", null)
-
-  dynamic "reviewers" {
-    for_each = length(lookup(each.value, "reviewers", [])) > 0 ? [each.value.reviewers] : []
-
-    content {
-      teams = lookup(reviewers.value, "teams")
-      users = lookup(reviewers.value, "users")
-    }
-  }
-
-  dynamic "deployment_branch_policy" {
-    for_each = length(lookup(each.value, "deployment_branch_policy", [])) > 0 ? [each.value.reviewers] : []
-
-    content {
-      protected_branches     = each.value.protected_branches
-      custom_branch_policies = each.value.custom_branch_policies
-    }
-  }
-}
-
-resource "github_repository_environment_deployment_policy" "this" {
-  for_each = { for v in var.environment_deployment_policies : v.name => v }
-
-  repository     = github_repository.this[0].name
-  environment    = each.value.environment_name
-  branch_pattern = each.value.branch_pattern
 }
 
 # Issues and Pull Requests
