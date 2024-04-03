@@ -62,9 +62,9 @@ resource "github_repository_environment_deployment_policy" "this" {
 module "secrets_and_variables" {
   source = "../secrets-and-variables"
 
-  repository        = var.repository
-  actions_secrets   = var.secrets
-  actions_variables = var.variables
+  repository = var.repository
+  secrets    = [for v in var.secrets : merge(v, { subjects = ["actions"] })]
+  variables  = [for v in var.variables : merge(v, { subjects = ["actions"] })]
 }
 
 resource "github_repository_deploy_key" "this" {

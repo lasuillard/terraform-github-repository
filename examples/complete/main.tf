@@ -155,19 +155,21 @@ EOT
     }
   ]
 
-  actions_secrets = [
+  secrets = [
     {
+      subjects        = ["actions", "codespaces", "dependabot"]
       secret_name     = "SENSITIVE_API_KEY"
       plaintext_value = "secret-for-all-env"
     },
     {
+      subjects        = ["actions"]
       environment     = "prod"
       secret_name     = "SENSITIVE_API_KEY"
       plaintext_value = "secret-for-prod-only"
     }
   ]
 
-  actions_variables = [
+  variables = [
     {
       variable_name = "SOME_VAR"
       value         = "sweet-potato"
