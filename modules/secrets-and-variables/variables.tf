@@ -33,7 +33,6 @@ variable "actions_variables" {
 variable "codespaces_secrets" {
   description = "Codespaces secrets for this repository."
   type = list(object({
-    environment     = optional(string)
     secret_name     = string
     encrypted_value = optional(string)
     plaintext_value = optional(string)
@@ -44,7 +43,6 @@ variable "codespaces_secrets" {
 variable "dependabot_secrets" {
   description = "Dependabot secrets for this repository."
   type = list(object({
-    environment     = optional(string)
     secret_name     = string
     encrypted_value = optional(string)
     plaintext_value = optional(string)
