@@ -34,7 +34,7 @@ output "repository_node_id" {
 }
 
 output "repository_repo_id" {
-  description = "GitHub ID for the repositor."
+  description = "GitHub ID for the repository."
   value       = try(github_repository.this[0].repo_id, null)
 }
 

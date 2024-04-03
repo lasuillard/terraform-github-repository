@@ -117,7 +117,7 @@ Terraform module to create GitHub repository and relevant resources.
 | <a name="output_repository_node_id"></a> [repository\_node\_id](#output\_repository\_node\_id) | GraphQL global node id for use with v4 AP. |
 | <a name="output_repository_pages"></a> [repository\_pages](#output\_repository\_pages) | The block consisting of the repository's GitHub Pages configuration with the following additional attributes:<br><br>- `custom_404`: Whether the rendered GitHub Pages site has a custom 404 page.<br>- `html_url`: The absolute URL (including scheme) of the rendered GitHub Pages site e.g. https://username.github.io.<br>- `status`: The GitHub Pages site's build status e.g. building or built. |
 | <a name="output_repository_primary_language"></a> [repository\_primary\_language](#output\_repository\_primary\_language) | The primary language used in the repository. |
-| <a name="output_repository_repo_id"></a> [repository\_repo\_id](#output\_repository\_repo\_id) | GitHub ID for the repositor. |
+| <a name="output_repository_repo_id"></a> [repository\_repo\_id](#output\_repository\_repo\_id) | GitHub ID for the repository. |
 | <a name="output_repository_ssh_clone_url"></a> [repository\_ssh\_clone\_url](#output\_repository\_ssh\_clone\_url) | URL that can be provided to git clone to clone the repository via SSH. |
 | <a name="output_repository_svn_url"></a> [repository\_svn\_url](#output\_repository\_svn\_url) | URL that can be provided to svn checkout to check out the repository via GitHub's Subversion protocol emulation. |
 <!-- END_TF_DOCS -->
