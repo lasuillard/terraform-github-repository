@@ -173,9 +173,9 @@ module "secrets_and_variables" {
   source = "./modules/secrets-and-variables"
   count  = var.create ? 1 : 0
 
-  repository         = github_repository.this[0].name
-  codespaces_secrets = var.codespaces_secrets
-  dependabot_secrets = var.dependabot_secrets
+  repository = github_repository.this[0].name
+  secrets    = var.secrets
+  variables  = var.variables
 }
 
 # Branches & Tags
@@ -271,8 +271,6 @@ module "actions" {
   environments               = var.environments
   deployment_branch_policies = var.deployment_branch_policies
   deploy_keys                = var.deploy_keys
-  secrets                    = var.actions_secrets
-  variables                  = var.actions_variables
 }
 
 # Dependabot
