@@ -36,7 +36,7 @@ resource "github_repository" "this" {
 
     content {
       dynamic "source" {
-        for_each = try([pages.value.source], [])
+        for_each = pages.value.source != null ? [pages.value.source] : []
 
         content {
           branch = source.value.branch
