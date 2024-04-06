@@ -109,15 +109,18 @@ Terraform module to create GitHub repository and relevant resources.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_repository_branch_default"></a> [repository\_branch\_default](#output\_repository\_branch\_default) | Default branch name. |
-| <a name="output_repository_full_name"></a> [repository\_full\_name](#output\_repository\_full\_name) | A string of the form "orgname/reponame". |
-| <a name="output_repository_git_clone_url"></a> [repository\_git\_clone\_url](#output\_repository\_git\_clone\_url) | URL that can be provided to git clone to clone the repository anonymously via the git protocol. |
-| <a name="output_repository_html_url"></a> [repository\_html\_url](#output\_repository\_html\_url) | URL to the repository on the web. |
-| <a name="output_repository_http_clone_url"></a> [repository\_http\_clone\_url](#output\_repository\_http\_clone\_url) | URL that can be provided to git clone to clone the repository via HTTPS. |
-| <a name="output_repository_node_id"></a> [repository\_node\_id](#output\_repository\_node\_id) | GraphQL global node id for use with v4 AP. |
-| <a name="output_repository_pages"></a> [repository\_pages](#output\_repository\_pages) | The block consisting of the repository's GitHub Pages configuration with the following additional attributes:<br><br>- `custom_404`: Whether the rendered GitHub Pages site has a custom 404 page.<br>- `html_url`: The absolute URL (including scheme) of the rendered GitHub Pages site e.g. https://username.github.io.<br>- `status`: The GitHub Pages site's build status e.g. building or built. |
-| <a name="output_repository_primary_language"></a> [repository\_primary\_language](#output\_repository\_primary\_language) | The primary language used in the repository. |
-| <a name="output_repository_repo_id"></a> [repository\_repo\_id](#output\_repository\_repo\_id) | GitHub ID for the repositor. |
-| <a name="output_repository_ssh_clone_url"></a> [repository\_ssh\_clone\_url](#output\_repository\_ssh\_clone\_url) | URL that can be provided to git clone to clone the repository via SSH. |
-| <a name="output_repository_svn_url"></a> [repository\_svn\_url](#output\_repository\_svn\_url) | URL that can be provided to svn checkout to check out the repository via GitHub's Subversion protocol emulation. |
+| <a name="output_actions"></a> [actions](#output\_actions) | GitHub Actions module outputs. |
+| <a name="output_autolink_references"></a> [autolink\_references](#output\_autolink\_references) | Autolink references. |
+| <a name="output_branch_default"></a> [branch\_default](#output\_branch\_default) | Default branch name. |
+| <a name="output_branch_protections"></a> [branch\_protections](#output\_branch\_protections) | Branch protection rules. |
+| <a name="output_branches"></a> [branches](#output\_branches) | Branches in repository. |
+| <a name="output_collaborators"></a> [collaborators](#output\_collaborators) | List of repository collaborators. |
+| <a name="output_dependabot_security_updates_enabled"></a> [dependabot\_security\_updates\_enabled](#output\_dependabot\_security\_updates\_enabled) | Whether dependabot security updates enabled for this repository. |
+| <a name="output_files"></a> [files](#output\_files) | Files managed by this module. |
+| <a name="output_issue_labels"></a> [issue\_labels](#output\_issue\_labels) | Repository issue labels. |
+| <a name="output_repository"></a> [repository](#output\_repository) | Repository details. |
+| <a name="output_rulesets"></a> [rulesets](#output\_rulesets) | Repository rulesets. |
+| <a name="output_secrets_and_variables"></a> [secrets\_and\_variables](#output\_secrets\_and\_variables) | Repository Actions, Codespaces and Dependabot secrets and variables. |
+| <a name="output_tag_protections"></a> [tag\_protections](#output\_tag\_protections) | Tag protection rules. |
+| <a name="output_webhooks"></a> [webhooks](#output\_webhooks) | Repository webhooks. |
 <!-- END_TF_DOCS -->

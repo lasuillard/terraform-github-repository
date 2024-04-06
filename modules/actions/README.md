@@ -48,5 +48,12 @@ Submodule for managing GitHub Actions settings, secrets and variables, environme
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_access_level"></a> [access\_level](#output\_access\_level) | Actions repository access level. |
+| <a name="output_deploy_keys"></a> [deploy\_keys](#output\_deploy\_keys) | Deploy keys. |
+| <a name="output_environment_deployment_policies"></a> [environment\_deployment\_policies](#output\_environment\_deployment\_policies) | List of environment deployment policies. |
+| <a name="output_environments"></a> [environments](#output\_environments) | List of repository environments. |
+| <a name="output_permissions"></a> [permissions](#output\_permissions) | Actions repository permissions. |
+| <a name="output_secrets_and_variables"></a> [secrets\_and\_variables](#output\_secrets\_and\_variables) | Actions secrets and variables. |
 <!-- END_TF_DOCS -->

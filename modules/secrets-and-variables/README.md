@@ -42,5 +42,11 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_actions_environment_secrets"></a> [actions\_environment\_secrets](#output\_actions\_environment\_secrets) | Actions environment secrets. |
+| <a name="output_actions_secrets"></a> [actions\_secrets](#output\_actions\_secrets) | Actions secrets. |
+| <a name="output_actions_variables"></a> [actions\_variables](#output\_actions\_variables) | Actions variables. |
+| <a name="output_codespaces_secrets"></a> [codespaces\_secrets](#output\_codespaces\_secrets) | Codespaces secrets. |
+| <a name="output_dependabot_secrets"></a> [dependabot\_secrets](#output\_dependabot\_secrets) | Dependabot secrets. |
 <!-- END_TF_DOCS -->

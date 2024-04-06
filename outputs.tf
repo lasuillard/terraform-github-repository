@@ -1,60 +1,69 @@
-output "repository_full_name" {
-  description = "A string of the form \"orgname/reponame\"."
-  value       = try(github_repository.this[0].full_name, null)
+output "repository" {
+  description = "Repository details."
+  value       = try(github_repository.this[0], null)
 }
 
-output "repository_html_url" {
-  description = "URL to the repository on the web."
-  value       = try(github_repository.this[0].html_url, null)
+output "collaborators" {
+  description = "List of repository collaborators."
+  value       = try(github_repository_collaborator.this, github_repository_collaborators.this[0], null)
 }
 
-output "repository_ssh_clone_url" {
-  description = "URL that can be provided to git clone to clone the repository via SSH."
-  value       = try(github_repository.this[0].ssh_clone_url, null)
+output "files" {
+  description = "Files managed by this module."
+  value       = github_repository_file.this
 }
 
-output "repository_http_clone_url" {
-  description = "URL that can be provided to git clone to clone the repository via HTTPS."
-  value       = try(github_repository.this[0].http_clone_url, null)
+output "webhooks" {
+  description = "Repository webhooks."
+  value       = github_repository_webhook.this
 }
 
-output "repository_git_clone_url" {
-  description = "URL that can be provided to git clone to clone the repository anonymously via the git protocol."
-  value       = try(github_repository.this[0].git_clone_url, null)
+output "secrets_and_variables" {
+  description = "Repository Actions, Codespaces and Dependabot secrets and variables."
+  value       = module.secrets_and_variables
 }
 
-output "repository_svn_url" {
-  description = "URL that can be provided to svn checkout to check out the repository via GitHub's Subversion protocol emulation."
-  value       = try(github_repository.this[0].svn_url, null)
-}
-
-output "repository_node_id" {
-  description = "GraphQL global node id for use with v4 AP."
-  value       = try(github_repository.this[0].node_id, null)
-}
-
-output "repository_repo_id" {
-  description = "GitHub ID for the repositor."
-  value       = try(github_repository.this[0].repo_id, null)
-}
-
-output "repository_primary_language" {
-  description = "The primary language used in the repository."
-  value       = try(github_repository.this[0].primary_language, null)
-}
-
-output "repository_pages" {
-  description = <<-EOT
-The block consisting of the repository's GitHub Pages configuration with the following additional attributes:
-
-- `custom_404`: Whether the rendered GitHub Pages site has a custom 404 page.
-- `html_url`: The absolute URL (including scheme) of the rendered GitHub Pages site e.g. https://username.github.io.
-- `status`: The GitHub Pages site's build status e.g. building or built.
-EOT
-  value       = try(github_repository.this[0].pages, null)
-}
-
-output "repository_branch_default" {
+output "branch_default" {
   description = "Default branch name."
   value       = try(github_branch_default.this[0].branch, null)
+}
+
+output "branches" {
+  description = "Branches in repository."
+  value       = github_branch.this
+}
+
+output "branch_protections" {
+  description = "Branch protection rules."
+  value       = github_branch_protection.this
+}
+
+output "rulesets" {
+  description = "Repository rulesets."
+  value       = module.rulesets
+}
+
+output "tag_protections" {
+  description = "Tag protection rules."
+  value       = github_repository_tag_protection.this
+}
+
+output "actions" {
+  description = "GitHub Actions module outputs."
+  value       = module.actions
+}
+
+output "dependabot_security_updates_enabled" {
+  description = "Whether dependabot security updates enabled for this repository."
+  value       = try(github_repository_dependabot_security_updates.this[0].enabled, null)
+}
+
+output "issue_labels" {
+  description = "Repository issue labels."
+  value       = try(github_issue_label.this, github_issue_labels.this[0], null)
+}
+
+output "autolink_references" {
+  description = "Autolink references."
+  value       = github_repository_autolink_reference.this
 }

@@ -36,5 +36,7 @@ No modules.
 
 ## Outputs
 
-No outputs.
+| Name | Description |
+|------|-------------|
+| <a name="output_rulesets"></a> [rulesets](#output\_rulesets) | Repository rulesets. |
 <!-- END_TF_DOCS -->
