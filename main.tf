@@ -2,7 +2,7 @@ resource "github_repository" "this" {
   count = var.create ? 1 : 0
 
   lifecycle {
-    ignore_changes = [description]
+    ignore_changes = [description, homepage_url, topics]
   }
 
   name                        = var.name
@@ -36,7 +36,7 @@ resource "github_repository" "this" {
 
     content {
       dynamic "source" {
-        for_each = try([pages.value.source], [])
+        for_each = pages.value.source != null ? [pages.value.source] : []
 
         content {
           branch = source.value.branch
