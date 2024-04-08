@@ -15,7 +15,18 @@ output "files" {
 
 output "webhooks" {
   description = "Repository webhooks."
-  value       = github_repository_webhook.this
+  value = [
+    for e in github_repository_webhook.this :
+    {
+      repository = e.repository
+      events     = e.events
+      configuration = {
+        content_type = e.configuration[0].content_type
+        insecure_ssl = e.configuration[0].insecure_ssl
+      }
+      active = e.active
+    }
+  ]
 }
 
 output "secrets_and_variables" {
