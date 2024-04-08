@@ -161,8 +161,8 @@ resource "github_repository_webhook" "this" {
     content {
       url          = configuration.value.url
       content_type = configuration.value.content_type
-      secret       = lookup(configuration.value, "secret", null)
-      insecure_ssl = lookup(configuration.value, "insecure", null)
+      secret       = try(configuration.value.secret, null)
+      insecure_ssl = try(configuration.value.insecure_ssl, null)
     }
   }
 
