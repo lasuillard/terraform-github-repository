@@ -150,13 +150,13 @@ resource "github_repository_file" "this" {
 }
 
 resource "github_repository_webhook" "this" {
-  count = length(var.webhooks)
+  for_each = { for index, v in var.webhooks : index => v if var.create }
 
   repository = github_repository.this[0].name
-  events     = var.webhooks[count.index].events
+  events     = each.value.events
 
   dynamic "configuration" {
-    for_each = length(var.webhooks[count.index].configuration) > 0 ? [var.webhooks[count.index].configuration] : []
+    for_each = each.value.configuration != null ? [each.value.configuration] : []
 
     content {
       url          = configuration.value.url
@@ -166,7 +166,7 @@ resource "github_repository_webhook" "this" {
     }
   }
 
-  active = lookup(var.webhooks[count.index], "active", null)
+  active = try(each.value.active, null)
 }
 
 module "secrets_and_variables" {
