@@ -276,7 +276,7 @@ module "actions" {
 # Dependabot
 # ============================================================================
 resource "github_repository_dependabot_security_updates" "this" {
-  count      = var.create ? 1 : 0
+  count      = var.create && var.vulnerability_alerts ? 1 : 0
   repository = github_repository.this[0].name
   enabled    = var.dependabot_security_updates_enabled
 }

@@ -5,7 +5,8 @@ provider "github" {
 module "simple" {
   source = "../../"
 
-  name = "simple"
+  name                 = "simple"
+  vulnerability_alerts = false
 }
 
 module "disabled" {
