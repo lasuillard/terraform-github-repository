@@ -23,6 +23,11 @@ output "actions_variables" {
   value       = github_actions_variable.this
 }
 
+output "actions_environment_variables" {
+  description = "Actions environment variables."
+  value       = github_actions_environment_variable.this
+}
+
 output "codespaces_secrets" {
   description = "Codespaces secrets."
   value = [
