@@ -68,7 +68,7 @@ module "secrets_and_variables" {
 }
 
 resource "github_repository_deploy_key" "this" {
-  for_each = toset(var.deploy_keys)
+  for_each = { for deploy_key in var.deploy_keys : deploy_key.title => deploy_key }
 
   repository = var.repository
   key        = each.value.key

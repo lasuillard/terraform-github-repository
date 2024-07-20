@@ -182,6 +182,14 @@ EOT
     }
   ]
 
+  deploy_keys = [
+    {
+      title     = "Deploy Key"
+      key       = "some-ssh-key"
+      read_only = true
+    }
+  ]
+
   dependabot_security_updates_enabled = true
 
   issue_labels = [
