@@ -14,7 +14,7 @@ Submodule for repository rulesets.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.2.3 |
 
 ## Modules
 
