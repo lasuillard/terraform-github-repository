@@ -14,7 +14,7 @@ Submodule for managing GitHub Actions settings, secrets and variables, environme
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.1 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.2.3 |
 
 ## Modules
 
