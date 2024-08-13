@@ -7,7 +7,7 @@
     "ghcr.io/devcontainers-contrib/features/terraform-docs:1": {}
   },
   "onCreateCommand": "./.devcontainer/onCreateCommand.sh",
-	"postAttachCommand": "pre-commit install",
+  "postAttachCommand": "pre-commit install",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -17,13 +17,7 @@
         "streetsidesoftware.code-spell-checker",
         "editorconfig.editorconfig",
         "vivaxy.vscode-conventional-commits",
-        "svelte.svelte-vscode",
-        "jock.svg",
-        "bradlc.vscode-tailwindcss",
-        "vitest.explorer",
-        "dbaeumer.vscode-eslint",
-        "esbenp.prettier-vscode",
-        "ms-playwright.playwright"
+        "hashicorp.terraform"
       ]
     }
   }
