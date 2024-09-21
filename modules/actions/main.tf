@@ -33,7 +33,7 @@ resource "github_repository_environment" "this" {
   prevent_self_review = try(each.value.prevent_self_review, null)
 
   dynamic "reviewers" {
-    for_each = each.value.reviewers != null ? [each.value.reviewrs] : []
+    for_each = each.value.reviewers != null ? [each.value.reviewers] : []
 
     content {
       teams = try(reviewers.value.teams, null)
