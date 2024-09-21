@@ -10,7 +10,9 @@ repos:
         args: [--tf-init-args=-upgrade]
       - id: terraform_providers_lock
       - id: terraform_docs
-        args: [--args=--config=.terraform-docs.yaml]
+        args:
+          - --args=--config=.terraform-docs.yaml
+          - --args=--lockfile=false
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v4.5.0
