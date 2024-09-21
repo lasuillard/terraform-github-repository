@@ -14,7 +14,7 @@ Submodule for creating GitHub Actions variables and secrets for Actions, Codespa
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.3.0 |
+| <a name="provider_github"></a> [github](#provider\_github) | ~> 6.2 |
 
 ## Modules
 
