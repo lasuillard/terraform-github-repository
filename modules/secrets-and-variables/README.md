@@ -14,7 +14,7 @@ Submodule for creating GitHub Actions variables and secrets for Actions, Codespa
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.3 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.3.0 |
 
 ## Modules
 
@@ -37,8 +37,8 @@ No modules.
 |------|-------------|------|---------|:--------:|
 | <a name="input_create"></a> [create](#input\_create) | Whether to create this module or not. | `bool` | `true` | no |
 | <a name="input_repository"></a> [repository](#input\_repository) | The name of the repository. | `string` | n/a | yes |
-| <a name="input_secrets"></a> [secrets](#input\_secrets) | GitHub Actions secrets for this repository.<br><br>- Available values for `subject` are `"actions"`, `"codespaces"`, `"dependabot"`.<br>- `github_actions_environment_secret` resource will be created if `environment` key specified. | <pre>list(object({<br>    subjects        = set(string)<br>    environment     = optional(string)<br>    secret_name     = string<br>    encrypted_value = optional(string)<br>    plaintext_value = optional(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_variables"></a> [variables](#input\_variables) | GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified. | <pre>list(object({<br>    environment   = optional(string)<br>    variable_name = string<br>    value         = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_secrets"></a> [secrets](#input\_secrets) | GitHub Actions secrets for this repository.<br/><br/>- Available values for `subject` are `"actions"`, `"codespaces"`, `"dependabot"`.<br/>- `github_actions_environment_secret` resource will be created if `environment` key specified. | <pre>list(object({<br/>    subjects        = set(string)<br/>    environment     = optional(string)<br/>    secret_name     = string<br/>    encrypted_value = optional(string)<br/>    plaintext_value = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_variables"></a> [variables](#input\_variables) | GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified. | <pre>list(object({<br/>    environment   = optional(string)<br/>    variable_name = string<br/>    value         = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
