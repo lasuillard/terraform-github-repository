@@ -454,12 +454,6 @@ variable "rulesets" {
   default = []
 }
 
-variable "tag_protections" {
-  description = "Tag protection rules."
-  type        = list(string)
-  default     = []
-}
-
 # GitHub Actions
 # ============================================================================
 variable "actions_repository_access_level" {

@@ -54,11 +54,6 @@ output "rulesets" {
   value       = module.rulesets
 }
 
-output "tag_protections" {
-  description = "Tag protection rules."
-  value       = github_repository_tag_protection.this
-}
-
 output "actions" {
   description = "GitHub Actions module outputs."
   value       = module.actions

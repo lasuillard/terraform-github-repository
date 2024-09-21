@@ -14,7 +14,7 @@ Submodule for managing GitHub Actions settings, secrets and variables, environme
 
 | Name | Version |
 |------|---------|
-| <a name="provider_github"></a> [github](#provider\_github) | 6.2.3 |
+| <a name="provider_github"></a> [github](#provider\_github) | 6.3.0 |
 
 ## Modules
 
@@ -37,14 +37,14 @@ Submodule for managing GitHub Actions settings, secrets and variables, environme
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_create"></a> [create](#input\_create) | Whether to create this module or not. | `bool` | `true` | no |
-| <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | Deploy keys. | <pre>list(object({<br>    key       = string<br>    read_only = bool<br>    title     = string<br>  }))</pre> | `[]` | no |
-| <a name="input_deployment_branch_policies"></a> [deployment\_branch\_policies](#input\_deployment\_branch\_policies) | Deployment branch policies. | <pre>list(object({<br>    environment    = string<br>    branch_pattern = string<br>  }))</pre> | `[]` | no |
-| <a name="input_environments"></a> [environments](#input\_environments) | List of GitHub repository environments. | <pre>map(object({<br>    wait_timer          = optional(number)<br>    can_admins_bypass   = optional(bool)<br>    prevent_self_review = optional(bool)<br>    reviewers = optional(object({<br>      teams = optional(set(string))<br>      users = optional(set(string))<br>    }))<br>    deployment_branch_policy = optional(object({<br>      protected_branches     = bool<br>      custom_branch_policies = bool<br>    }))<br>  }))</pre> | `{}` | no |
+| <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | Deploy keys. | <pre>list(object({<br/>    key       = string<br/>    read_only = bool<br/>    title     = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_deployment_branch_policies"></a> [deployment\_branch\_policies](#input\_deployment\_branch\_policies) | Deployment branch policies. | <pre>list(object({<br/>    environment    = string<br/>    branch_pattern = string<br/>  }))</pre> | `[]` | no |
+| <a name="input_environments"></a> [environments](#input\_environments) | List of GitHub repository environments. | <pre>map(object({<br/>    wait_timer          = optional(number)<br/>    can_admins_bypass   = optional(bool)<br/>    prevent_self_review = optional(bool)<br/>    reviewers = optional(object({<br/>      teams = optional(set(string))<br/>      users = optional(set(string))<br/>    }))<br/>    deployment_branch_policy = optional(object({<br/>      protected_branches     = bool<br/>      custom_branch_policies = bool<br/>    }))<br/>  }))</pre> | `{}` | no |
 | <a name="input_repository"></a> [repository](#input\_repository) | The name of the repository. | `string` | n/a | yes |
-| <a name="input_repository_access_level"></a> [repository\_access\_level](#input\_repository\_access\_level) | Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.<br><br>If `null`, skip creation of `github_actions_repository_access_level` resource. | `string` | `null` | no |
-| <a name="input_repository_permissions"></a> [repository\_permissions](#input\_repository\_permissions) | GitHub Actions permissions for a given repository. | <pre>object({<br>    allowed_actions = optional(string)<br>    enabled         = optional(bool)<br>    allowed_actions_config = optional(object({<br>      github_owned_allowed = bool<br>      patterns_allowed     = optional(set(string))<br>      verified_allowed     = optional(bool)<br>    }))<br>  })</pre> | `null` | no |
-| <a name="input_secrets"></a> [secrets](#input\_secrets) | GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified. | <pre>list(object({<br>    environment     = optional(string)<br>    secret_name     = string<br>    encrypted_value = optional(string)<br>    plaintext_value = optional(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_variables"></a> [variables](#input\_variables) | GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified. | <pre>list(object({<br>    environment   = optional(string)<br>    variable_name = string<br>    value         = optional(string)<br>  }))</pre> | `[]` | no |
+| <a name="input_repository_access_level"></a> [repository\_access\_level](#input\_repository\_access\_level) | Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.<br/><br/>If `null`, skip creation of `github_actions_repository_access_level` resource. | `string` | `null` | no |
+| <a name="input_repository_permissions"></a> [repository\_permissions](#input\_repository\_permissions) | GitHub Actions permissions for a given repository. | <pre>object({<br/>    allowed_actions = optional(string)<br/>    enabled         = optional(bool)<br/>    allowed_actions_config = optional(object({<br/>      github_owned_allowed = bool<br/>      patterns_allowed     = optional(set(string))<br/>      verified_allowed     = optional(bool)<br/>    }))<br/>  })</pre> | `null` | no |
+| <a name="input_secrets"></a> [secrets](#input\_secrets) | GitHub Actions secrets for this repository. Create `github_actions_environment_secret` resource if `environment` key specified. | <pre>list(object({<br/>    environment     = optional(string)<br/>    secret_name     = string<br/>    encrypted_value = optional(string)<br/>    plaintext_value = optional(string)<br/>  }))</pre> | `[]` | no |
+| <a name="input_variables"></a> [variables](#input\_variables) | GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified. | <pre>list(object({<br/>    environment   = optional(string)<br/>    variable_name = string<br/>    value         = optional(string)<br/>  }))</pre> | `[]` | no |
 
 ## Outputs
 
