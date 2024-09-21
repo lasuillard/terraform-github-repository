@@ -133,8 +133,6 @@ EOT
     }
   ]
 
-  tag_protections = ["v*"]
-
   actions_repository_access_level = "user"
   actions_repository_permissions = {
     allowed_actions = "all"
