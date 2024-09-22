@@ -16,7 +16,7 @@ resource "github_repository_ruleset" "this" {
           operator = branch_name_pattern.value.operator
           pattern  = branch_name_pattern.value.pattern
           name     = try(branch_name_pattern.value.name, null)
-          negate   = try(branch_name_pattern.value.pattern, null)
+          negate   = try(branch_name_pattern.value.negate, null)
         }
       }
 
@@ -27,7 +27,7 @@ resource "github_repository_ruleset" "this" {
           operator = commit_author_email_pattern.value.operator
           pattern  = commit_author_email_pattern.value.pattern
           name     = try(commit_author_email_pattern.value.name, null)
-          negate   = try(commit_author_email_pattern.value.pattern, null)
+          negate   = try(commit_author_email_pattern.value.negate, null)
         }
       }
 
@@ -38,7 +38,7 @@ resource "github_repository_ruleset" "this" {
           operator = commit_message_pattern.value.operator
           pattern  = commit_message_pattern.value.pattern
           name     = try(commit_message_pattern.value.name, null)
-          negate   = try(commit_message_pattern.value.pattern, null)
+          negate   = try(commit_message_pattern.value.negate, null)
         }
       }
 
@@ -49,7 +49,7 @@ resource "github_repository_ruleset" "this" {
           operator = committer_email_pattern.value.operator
           pattern  = committer_email_pattern.value.pattern
           name     = try(committer_email_pattern.value.name, null)
-          negate   = try(committer_email_pattern.value.pattern, null)
+          negate   = try(committer_email_pattern.value.negate, null)
         }
       }
 
@@ -81,7 +81,7 @@ resource "github_repository_ruleset" "this" {
       required_signatures     = try(rules.value.required_signatures, null)
 
       dynamic "required_status_checks" {
-        for_each = rules.value.required_status_checks != null ? [rules.value.required_status_chekcs] : []
+        for_each = rules.value.required_status_checks != null ? [rules.value.required_status_checks] : []
 
         content {
           dynamic "required_check" {
@@ -98,13 +98,13 @@ resource "github_repository_ruleset" "this" {
       }
 
       dynamic "tag_name_pattern" {
-        for_each = rules.value.committer_email_pattern != null ? [rules.value.committer_email_pattern] : []
+        for_each = rules.value.tag_name_pattern != null ? [rules.value.tag_name_pattern] : []
 
         content {
           operator = tag_name_pattern.value.operator
           pattern  = tag_name_pattern.value.pattern
           name     = try(tag_name_pattern.value.name, null)
-          negate   = try(tag_name_pattern.value.pattern, null)
+          negate   = try(tag_name_pattern.value.negate, null)
         }
       }
 

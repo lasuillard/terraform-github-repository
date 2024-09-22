@@ -190,12 +190,13 @@ EOT
           ]
           strict_required_status_checks_policy = true
         }
-        tag_name_pattern = {
-          operator = "regex"
-          pattern  = "^v[0-9]+"
-          name     = "tag-name-pattern"
-          negate   = false
-        }
+        # * Cannot be used with branch_name_pattern at the same time
+        # tag_name_pattern = {
+        #   operator = "regex"
+        #   pattern  = "^v[0-9]+"
+        #   name     = "tag-name-pattern"
+        #   negate   = false
+        # }
         update                        = true
         update_allows_fetch_and_merge = true
       }
@@ -233,8 +234,8 @@ EOT
       can_admins_bypass   = false
       prevent_self_review = true
       reviewers = {
-        teams = ["my-org/team"]
-        users = ["/some-username"]
+        teams = [12345]
+        users = [512478]
       }
       deployment_branch_policy = {
         protected_branches     = true

@@ -99,6 +99,7 @@ resource "github_repository_collaborator" "this" {
   for_each = {
     for v in(var.collaborators_authoritative ? [] : coalesce(var.collaborators.non_authoritative, [])) :
     v.username => v
+    if var.create
   }
 
   repository                  = github_repository.this[0].name
@@ -132,7 +133,7 @@ resource "github_repository_collaborators" "this" {
 }
 
 resource "github_repository_file" "this" {
-  for_each = { for v in var.files : v.file => v }
+  for_each = { for v in var.files : v.file => v if var.create }
 
   lifecycle {
     # https://github.com/integrations/terraform-provider-github/issues/689
@@ -281,6 +282,7 @@ resource "github_issue_label" "this" {
   for_each = {
     for index, v in var.issue_labels_authoritative ? [] : var.issue_labels :
     index => v
+    if var.create
   }
 
   repository  = github_repository.this[0].name
@@ -306,7 +308,7 @@ resource "github_issue_labels" "this" {
 }
 
 resource "github_repository_autolink_reference" "this" {
-  for_each = { for v in var.autolink_references : v.key_prefix => v }
+  for_each = { for v in var.autolink_references : v.key_prefix => v if var.create }
 
   repository          = github_repository.this[0].name
   key_prefix          = each.value.key_prefix
