@@ -2,23 +2,10 @@ provider "github" {
   token = var.github_token
 }
 
-module "simple" {
-  source = "../../"
-
-  name                 = "simple"
-  vulnerability_alerts = false
-}
-
-module "disabled" {
-  source = "../../"
-
-  create = false
-  name   = "do-not-create"
-}
-
 module "complete" {
   source = "../../"
 
+  create                      = var.create
   name                        = "complete"
   description                 = "An complete example repository."
   visibility                  = "private"
@@ -206,35 +193,4 @@ EOT
       is_alphanumeric     = false
     }
   ]
-}
-
-module "authoritatve" {
-  source = "../../"
-
-  name = "authoritative"
-
-  collaborators = {
-    authoritative = {
-      users = [
-        {
-          username = "some-username"
-        }
-      ],
-      teams = [
-        {
-          team_id = "some-team-id"
-        }
-      ]
-    }
-  }
-  collaborators_authoritative = true
-
-  issue_labels = [
-    {
-      name        = "Urgent"
-      color       = "#FF0000"
-      description = "Something urgent"
-    }
-  ]
-  issue_labels_authoritative = true
 }

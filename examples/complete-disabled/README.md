@@ -1,4 +1,4 @@
-# complete
+# complete-disabled
 
 Configuration example for creating public GitHub repository.
 
@@ -18,7 +18,7 @@ No providers.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_complete"></a> [complete](#module\_complete) | ../../ | n/a |
+| <a name="module_disabled"></a> [disabled](#module\_disabled) | ../complete | n/a |
 
 ## Resources
 
@@ -28,7 +28,6 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_create"></a> [create](#input\_create) | n/a | `bool` | `true` | no |
 | <a name="input_github_token"></a> [github\_token](#input\_github\_token) | n/a | `string` | n/a | yes |
 
 ## Outputs
