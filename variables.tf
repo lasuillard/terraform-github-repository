@@ -46,9 +46,9 @@ variable "has_discussions" {
 
 variable "has_projects" {
   description = <<-EOT
-Set to true to enable the GitHub Projects features on the repository.
+Set to `true` to enable the GitHub Projects features on the repository.
 
-Per the GitHub documentation when in an organization that has disabled repository projects it will default to `false` and will otherwise default to `true`.
+Per the GitHub [documentation](https://developer.github.com/v3/repos/#create) when in an organization that has disabled repository projects it will default to `false` and will otherwise default to `true`.
 If you specify `true` when it has been disabled it will return an error.
 EOT
   type        = bool
@@ -130,7 +130,7 @@ variable "delete_branch_on_merge" {
 }
 
 variable "web_commit_signoff_required" {
-  description = "Require contributors to sign off on web-based commits. See more here."
+  description = "Require contributors to sign off on web-based commits. See more [here](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/managing-repository-settings/managing-the-commit-signoff-policy-for-your-repository)."
   type        = bool
   default     = false
 }
@@ -149,7 +149,7 @@ variable "auto_init" {
 
 variable "gitignore_template" {
   description = <<-EOT
-Use the name of the template without the extension. For example, `"Haskell"`.
+Use the [name of the template](https://github.com/github/gitignore) without the extension. For example, `"Haskell"`.
 EOT
   type        = string
   default     = null
@@ -157,7 +157,7 @@ EOT
 
 variable "license_template" {
   description = <<-EOT
-Use the name of the template without the extension. For example, `"mit"` or `"mpl-2.0"`.
+Use the [name of the template](https://github.com/github/choosealicense.com/tree/gh-pages/_licenses) without the extension. For example, `"mit"` or `"mpl-2.0"`.
 EOT
   type        = string
   default     = null
@@ -167,7 +167,7 @@ variable "archived" {
   description = <<-EOT
 Specifies if the repository should be archived.
 
-NOTE Currently, the API does not support unarchiving.
+**NOTE** Currently, the API does not support unarchiving.
 EOT
   type        = bool
   default     = false
@@ -199,7 +199,7 @@ EOT
 
 variable "security_and_analysis" {
   description = <<-EOT
-The repository's security and analysis configuration.
+The repository's [security and analysis](https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-security-and-analysis-settings-for-your-repository) configuration.
 
 See [Security and Analysis Configuration](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository#security-and-analysis-configuration) for details.
 EOT
@@ -246,7 +246,11 @@ EOT
 
 variable "vulnerability_alerts" {
   description = <<-EOT
-Set to `true` to enable security alerts for vulnerable dependencies. Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.) See GitHub Documentation for details. Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
+Set to `true` to enable security alerts for vulnerable dependencies.
+
+Enabling requires alerts to be enabled on the owner level. (Note for importing: GitHub enables the alerts on public repos but disables them on private repos by default.)
+See [GitHub Documentation](https://help.github.com/en/github/managing-security-vulnerabilities/about-security-alerts-for-vulnerable-dependencies) for details.
+Note that vulnerability alerts have not been successfully tested on any GitHub Enterprise instance and may be unavailable in those settings.
 EOT
   type        = bool
   default     = true
@@ -377,6 +381,7 @@ variable "branch_protections" {
   default = []
 }
 
+# NOTE: Forwarded variable for rulesets submodule
 variable "rulesets" {
   description = "Repository rulesets."
   type = list(object({
@@ -456,6 +461,7 @@ variable "rulesets" {
 
 # GitHub Actions
 # ============================================================================
+# NOTE: Forwarded variable for actions submodule
 variable "actions_repository_access_level" {
   description = <<-EOT
 Where the actions or reusable workflows of the repository may be used. Possible values are `"none"`, `"user"`, `"organization"`, or `"enterprise"`.
@@ -467,6 +473,7 @@ EOT
   default     = null
 }
 
+# NOTE: Forwarded variable for actions submodule
 variable "actions_repository_permissions" {
   description = "GitHub Actions permissions for a given repository."
   type = object({
@@ -482,6 +489,7 @@ variable "actions_repository_permissions" {
   default  = null
 }
 
+# NOTE: Forwarded variable for actions submodule
 variable "environments" {
   description = "List of GitHub repository environments."
   type = map(object({
@@ -500,6 +508,7 @@ variable "environments" {
   default = {}
 }
 
+# NOTE: Forwarded variable for actions submodule
 variable "deployment_branch_policies" {
   description = "Deployment branch policies."
   type = list(object({
@@ -509,6 +518,7 @@ variable "deployment_branch_policies" {
   default = []
 }
 
+# NOTE: Forwarded variable for actions submodule
 variable "deploy_keys" {
   description = "Deploy keys."
   type = list(object({
@@ -519,6 +529,7 @@ variable "deploy_keys" {
   default = []
 }
 
+# NOTE: Forwarded variable for secrets_and_variables submodule
 variable "secrets" {
   description = <<-EOT
 GitHub Actions secrets for this repository.
@@ -536,6 +547,7 @@ EOT
   default = []
 }
 
+# NOTE: Forwarded variable for secrets_and_variables submodule
 variable "variables" {
   description = "GitHub Actions variables for this repository. Create `github_actions_environment_variable` resource if `environment` key specified."
   type = list(object({

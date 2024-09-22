@@ -1,4 +1,7 @@
 {
   "editor.formatOnSave": true,
-  "json.format.enable": true
+  "json.format.enable": true,
+  "cSpell.words": [
+    "rulesets"
+  ]
 }
